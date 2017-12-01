@@ -1,9 +1,15 @@
-#include <iostream>
-#include <IA.h>
+//
+// Created by Edouard on 30/11/2017.
+//
 
-int main() {
+#include <IA.h>
+#include "Core.h"
+
+int main()
+{
+    Core coreGame;
     IA ia;
 
     ia.find_nb_qtuples(10, 10);
-    return 0;
+    return (coreGame.run());
 }
