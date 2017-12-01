@@ -145,8 +145,7 @@ int             Core::proceedInfo(std::stringstream &inputStream)
     std::string str;
 
     inputStream >> str;
-    if (!str.empty())
-        return (_com.sendCommand(Communication::CmdError, "Info: Incorrect arguments"));
+    //TODO finish info
     return (0);
 }
 

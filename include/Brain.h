@@ -11,6 +11,8 @@ class Brain{
 private:
     int _lastMoveX;
     int _lastMoveY;
+    //TODO remove
+    Board _board;
 public:
     Brain();
     ~Brain();
