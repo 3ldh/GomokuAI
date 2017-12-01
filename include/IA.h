@@ -54,7 +54,7 @@ class IA {
             }
         }
 
-        int comptue_score(char playerSymbol) {
+        int comptue_score(const char playerSymbol) const {
             if (playerSymbol == 'O')
                 return empty_nb * EMPTY_SCORE + n_nb * O_SCORE + nn_nb * OO_SCORE + nnn_nb * OOO_SCORE +
                        nnnn_nb * OOOO_SCORE;
@@ -79,15 +79,18 @@ private :
     std::vector<std::vector<int>> score_map;
 
     void print_map();
+    void print_score_map();
+    Qtuple_info &find_nb_qtuples_vertical(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
+    Qtuple_info &find_nb_qtuples_horizontal(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
+    Qtuple_info &find_nb_qtuples_DiagPos(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
+    Qtuple_info &find_nb_qtuples_DiagNeg(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
 
 public:
     IA();
-
     virtual ~IA();
-
-    Qtuple_info find_nb_qtuples(int posX, int posY);
+    Qtuple_info &find_nb_qtuples(std::string const &playerSymbols, int posX, int posY);
+    void update_score_map(int posX, int posY);
 
 };
-
 
 #endif //GOMOKU_IA_H

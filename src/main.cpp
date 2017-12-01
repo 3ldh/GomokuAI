@@ -5,11 +5,10 @@
 #include <IA.h>
 #include "Core.h"
 
-int main()
-{
-    Core coreGame;
+int main() {
     IA ia;
+    Core coreGame;
 
-    ia.find_nb_qtuples(10, 10);
+    ia.update_score_map(11, 10);
     return (coreGame.run());
 }
