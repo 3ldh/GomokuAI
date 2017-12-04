@@ -9,6 +9,6 @@ int main() {
     IA ia;
     Core coreGame;
 
-    ia.update_score_map(11, 10);
-    return (coreGame.run());
+    ia.update_score_map(11, 8);
+    return 0;///(coreGame.run());
 }
