@@ -9,7 +9,7 @@
 #include <vector>
 #include <iostream>
 
-class IA {
+class AI {
 
     struct Qtuple_info {
 
@@ -59,8 +59,7 @@ class IA {
                 return empty_nb * EMPTY_SCORE + n_nb * O_SCORE + nn_nb * OO_SCORE + nnn_nb * OOO_SCORE +
                        nnnn_nb * OOOO_SCORE;
             else if (playerSymbol == 'X')
-                return empty_nb * EMPTY_SCORE + n_nb * X_SCORE + nn_nb * XX_SCORE + nnn_nb * XXX_SCORE +
-                       nnnn_nb * XXXX_SCORE;
+                return n_nb * X_SCORE + nn_nb * XX_SCORE + nnn_nb * XXX_SCORE + nnnn_nb * XXXX_SCORE;
             else
                 return 0;
         }
@@ -74,6 +73,13 @@ class IA {
 
     static const int MAP_SIZE = 19;
 
+public:
+    struct Point {
+        int x;
+        int y;
+        Point(int x = 0, int y = 0) : x(x), y(y){};
+    };
+
 private :
     std::vector<std::vector<char>> map;
     std::vector<std::vector<int>> score_map;
@@ -84,13 +90,29 @@ private :
     Qtuple_info &find_nb_qtuples_horizontal(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_DiagPos(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_DiagNeg(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
+    Qtuple_info &find_nb_qtuples(std::string const &playerSymbols, int posX, int posY);
 
 public:
-    IA();
-    virtual ~IA();
-    Qtuple_info &find_nb_qtuples(std::string const &playerSymbols, int posX, int posY);
+    AI();
+    virtual ~AI();
     void update_score_map(int posX, int posY);
+    Point const &find_best_move() const;
+    void update_map(char playerSymbol, int x, int y);
 
 };
+
+template <typename I>
+I random_element(I begin, I end)
+{
+    const unsigned long n = std::distance(begin, end);
+    const unsigned long divisor = (RAND_MAX + 1) / n;
+
+    unsigned long k;
+    do { k = std::rand() / divisor; } while (k >= n);
+
+    std::advance(begin, k);
+    return begin;
+}
+
 
 #endif //GOMOKU_IA_H

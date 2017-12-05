@@ -7,7 +7,7 @@
 
 //TODO remove time
 #include <ctime>
-Brain::Brain()
+Brain::Brain() : ai(AI())
 {
     _lastMoveX = 0;
     _lastMoveY = 0;
@@ -21,22 +21,18 @@ Brain::~Brain()
 
 }
 
-//TODO remove the random
-#include <iostream>
 int Brain::calculateTurn(int x, int y)
 {
-    int xT = 10;
-    int yT = 10;
+    AI::Point p;
 
-    _board._board[xT][yT] = Board::TheirStone;
-    while (_board._board[xT][yT] != Board::EmptyStone)
-    {
-        xT = rand() % 19;
-        yT = rand() % 19;
-    }
-    _lastMoveX = xT;
-    _lastMoveY = yT;
-    _board._board[xT][yT] = Board::OurStone;
+    ai.update_map('X', x, y);
+    ai.update_score_map(x, y);
+    p = ai.find_best_move();
+    ai.update_map('O', p.x, p.y);
+    ai.update_score_map(p.x, p.y);
+    _lastMoveX = p.x;
+    _lastMoveY = p.y;
+    _board._board[p.x][p.y] = Board::OurStone;
     return (0);
 }
 
@@ -59,6 +55,7 @@ int Brain::putBoardPiece(int x, int y, Board::TypeStone type)
 int Brain::clear()
 {
     //TODO remove the random
+    ai = AI();
     _board.clear();
     return (0);
 }

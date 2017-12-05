@@ -6,6 +6,7 @@
 #define GOMOKU_BRAIN_H
 
 #include "Board.h"
+#include "AI.h"
 
 class Brain{
 private:
@@ -13,6 +14,8 @@ private:
     int _lastMoveY;
     //TODO remove
     Board _board;
+    AI ai;
+
 public:
     Brain();
     ~Brain();

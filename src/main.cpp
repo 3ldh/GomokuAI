@@ -2,13 +2,16 @@
 // Created by Edouard on 30/11/2017.
 //
 
-#include <IA.h>
+#include <AI.h>
 #include "Core.h"
 
 int main() {
-    IA ia;
+//    AI ia;
     Core coreGame;
 
-    ia.update_score_map(11, 8);
-    return 0;///(coreGame.run());
+//    ia.update_score_map(11, 8);
+//    AI::Point p = ia.find_best_move();
+//    std::cout << p.x << ", " << p.y << std::endl;
+    return coreGame.run();
+//return 0;
 }

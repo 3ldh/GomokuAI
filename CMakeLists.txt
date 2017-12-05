@@ -13,13 +13,13 @@ set(SOURCE_FILES
         src/Core.cpp src/Brain.cpp
         include/Communication.h src/main.cpp
         src/main.cpp
-        src/IA.cpp)            # Add main.cpp file of project root directory as source file
+        src/AI.cpp)            # Add main.cpp file of project root directory as source file
 
 set(INCLUDE_FILES
         include/Core.h
         include/Board.h
         include/Brain.h
         src/Communication.cpp
-        include/IA.h)
+        include/AI.h)
 
 add_executable(pbrain-LookAtMyBigBrain ${SOURCE_FILES} ${INCLUDE_FILES})

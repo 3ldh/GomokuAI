@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
-#include "IA.h"
+#include "AI.h"
 
-IA::IA() {
+AI::AI() {
     for (int y = 0; y < MAP_SIZE; ++y) {
         std::vector<char> mapX;
         std::vector<int> score_mapX;
@@ -17,39 +17,41 @@ IA::IA() {
         score_map.push_back(score_mapX);
     }
 
-    map[0][0] = 'O';
-    map[8][10] = '.';
-    map[8][9] = 'O';
-    map[9][10] = 'O';
-    map[10][8] = 'O';
-    map[10][9] = 'O';
-    map[7][10] = 'O';
-    map[6][9] = 'O';
-    map[5][8] = 'O';
-    map[4][7] = 'O';
-    map[12][7] = '.';
-    map[4][15] = '.';
-//    map[10][10] = '.';
-//    map[11][10] = '.';
-//    map[12][10] = 'O';
-//    map[13][10] = 'O';
+  /*  map[10][10] = 'O';
+    map[10][11] = 'O';
+    map[10][12] = 'O';
+    map[11][10] = 'X';
+    map[11][11] = 'X';
+    map[11][12] = 'X';
+    map[11][13] = 'X';
+
+    update_score_map(10, 10);;
+    update_score_map(11, 10);
+    update_score_map(11, 10);
+    update_score_map(12, 10);
+    update_score_map(10, 11);
+    update_score_map(11, 11);
+    update_score_map(12, 11);
     print_map();
+
+    update_score_map(14, 11);
+    find_best_move();*/
 }
 
-IA::~IA() = default;
+AI::~AI() = default;
 
-IA::Qtuple_info &IA::find_nb_qtuples(std::string const &playerSymbols, int posX, int posY) {
+AI::Qtuple_info &AI::find_nb_qtuples(std::string const &playerSymbols, int posX, int posY) {
 
     Qtuple_info *qtuple = new Qtuple_info();
 
     find_nb_qtuples_vertical(*qtuple, playerSymbols, posX, posY);
-    find_nb_qtuples_horizontal(*qtuple, playerSymbols, posY, posX);
+    find_nb_qtuples_horizontal(*qtuple, playerSymbols, posX, posY);
     find_nb_qtuples_DiagPos(*qtuple, playerSymbols, posX, posY);
     find_nb_qtuples_DiagNeg(*qtuple, playerSymbols, posX, posY);
     return *qtuple;
 }
 
-IA::Qtuple_info &IA::find_nb_qtuples_vertical(
+AI::Qtuple_info &AI::find_nb_qtuples_vertical(
         Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY) {
     int currI = -4;
     int consecutive_n = 0;
@@ -111,7 +113,7 @@ IA::Qtuple_info &IA::find_nb_qtuples_vertical(
 }
 
 
-IA::Qtuple_info &IA::find_nb_qtuples_horizontal(
+AI::Qtuple_info &AI::find_nb_qtuples_horizontal(
         Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY) {
     int currI = -4;
     int consecutive_n = 0;
@@ -173,8 +175,8 @@ IA::Qtuple_info &IA::find_nb_qtuples_horizontal(
     return qtuple;
 }
 
-IA::Qtuple_info &IA::find_nb_qtuples_DiagPos(
-        IA::Qtuple_info &qtuple, const std::string &playerSymbols, int posX, int posY) {
+AI::Qtuple_info &AI::find_nb_qtuples_DiagPos(
+        AI::Qtuple_info &qtuple, const std::string &playerSymbols, int posX, int posY) {
     int currI = -4;
     int consecutive_n = 0;
     int consecutive_empty = 0;
@@ -239,8 +241,8 @@ IA::Qtuple_info &IA::find_nb_qtuples_DiagPos(
 }
 
 
-IA::Qtuple_info &IA::find_nb_qtuples_DiagNeg(
-        IA::Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY) {
+AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
+        AI::Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY) {
     int currI = -4;
     int consecutive_n = 0;
     int consecutive_empty = 0;
@@ -304,7 +306,7 @@ IA::Qtuple_info &IA::find_nb_qtuples_DiagNeg(
     return qtuple;
 }
 
-void IA::print_map() {
+void AI::print_map() {
     for (int y = 0; y < MAP_SIZE; ++y) {
         for (int x = 0; x < MAP_SIZE; ++x) {
             std::cout << map[y][x] << " ";
@@ -313,7 +315,7 @@ void IA::print_map() {
     }
 }
 
-void IA::print_score_map() {
+void AI::print_score_map() {
     for (int y = 0; y < MAP_SIZE; ++y) {
         for (int x = 0; x < MAP_SIZE; ++x) {
             std::cout << score_map[y][x] << " ";
@@ -323,7 +325,7 @@ void IA::print_score_map() {
     std::cout << std::endl << std::endl;
 }
 
-void IA::update_score_map(int posX, int posY) {
+void AI::update_score_map(int posX, int posY) {
     for (int y = -4; y < 5; ++y) {
         for (int x = -4; x < 5; ++x) {
             if (posX + x >= 0 && posX + x < MAP_SIZE && posY + y >= 0 && posY + y < MAP_SIZE) {
@@ -331,15 +333,41 @@ void IA::update_score_map(int posX, int posY) {
                     Qtuple_info qtupleOX = find_nb_qtuples("OX", posX + x, posY + y);
                     Qtuple_info qtupleXO = find_nb_qtuples("XO", posX + x, posY + y);
                     score_map[posY + y][posX + x] = qtupleOX.comptue_score('O') + qtupleXO.comptue_score('X');
-                } else {
-                    score_map[posY + y][posX + x] = -1;
                 }
             }
         }
     }
-    print_score_map();
+//    print_score_map();
 }
 
+AI::Point const &AI::find_best_move() const {
+    Point *p = new Point();
+    int max_value = 0;
 
+    for (int y = 0; y < MAP_SIZE; ++y) {
+        for (int x = 0; x < MAP_SIZE; ++x) {
+            if (max_value < score_map[y][x]) {
+                max_value = score_map[y][x];
+                p->x = x;
+                p->y = y;
+            } else if (max_value == score_map[y][x]) {
+                if (rand() % 2 > 0) {
+                    p->x = x;
+                    p->y = y;
+                }
+            }
+        }
+    }
+//    std::cout << p->x << ", " << p->y << std::endl;
+    return *p;
+}
 
+void AI::update_map(char playerSymbol, int x, int y) {
+    if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
+        map[y][x] = playerSymbol;
+        score_map[y][x] = -1;
+       /* if (playerSymbol == 'O')
+            print_map();*/
+    }
+}
 
