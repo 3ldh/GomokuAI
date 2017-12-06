@@ -14,7 +14,7 @@ Board::Board()
         j = 0;
         while (j < WIDTH_BOARD)
         {
-            this->_board[i][j] = EmptyStone;
+            _board[i][j] = EmptyStone;
             ++j;
         }
         ++i;
@@ -31,7 +31,7 @@ void    Board::clear()
         j = 0;
         while (j < WIDTH_BOARD)
         {
-            this->_board[i][j] = EmptyStone;
+            _board[i][j] = EmptyStone;
             ++j;
         }
         ++i;

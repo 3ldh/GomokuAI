@@ -24,7 +24,7 @@ int Communication::readCommand()
 
 int Communication::sendCommand(commandSent cmd, std::string const &msg) const
 {
-    std::cout << this->_sendCmd[cmd] << " " << msg << std::endl;
+    std::cout << _sendCmd[cmd] << " " << msg << std::endl;
     std::flush(std::cout);
     return (0);
 }
@@ -56,5 +56,5 @@ int Communication::sendAbout() const
 
 std::string const &Communication::getInput() const
 {
-    return (this->_input);
+    return (_input);
 }
