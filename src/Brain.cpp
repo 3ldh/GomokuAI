@@ -4,14 +4,12 @@
 
 #include <cstdlib>
 #include "Brain.h"
-
-//TODO remove time
 #include <ctime>
-Brain::Brain()
+
+Brain::Brain() : ai(AI())
 {
     _lastMoveX = 0;
     _lastMoveY = 0;
-    //TODO remove the random
     std::srand(std::time(0));
     _board.clear();
 }
@@ -21,31 +19,30 @@ Brain::~Brain()
 
 }
 
-//TODO remove the random
-#include <iostream>
 int Brain::calculateTurn(int x, int y)
 {
-    int xT = 10;
-    int yT = 10;
+    AI::Point p;
 
-    _board._board[xT][yT] = Board::TheirStone;
-    while (_board._board[xT][yT] != Board::EmptyStone)
-    {
-        xT = rand() % 19;
-        yT = rand() % 19;
-    }
-    _lastMoveX = xT;
-    _lastMoveY = yT;
-    _board._board[xT][yT] = Board::OurStone;
+    ai.update_map('X', x, y);
+    ai.update_score_map(x, y);
+    p = ai.find_best_move();
+    ai.update_map('O', p.x, p.y);
+    ai.update_score_map(p.x, p.y);
+    _lastMoveX = p.x;
+    _lastMoveY = p.y;
+    _board._board[p.x][p.y] = Board::OurStone;
     return (0);
 }
 
 //TODO remove the random
 int Brain::putFirstPiece()
 {
-    _lastMoveX = 10;
-    _lastMoveY = 10;
-    _board._board[10][10] = Board::OurStone;
+    std::unique_ptr<AI::Point> p = ai.first_move();
+    _lastMoveX = p->x;
+    _lastMoveY = p->y;
+    ai.update_map('O', _lastMoveX, _lastMoveY);
+    ai.update_score_map(_lastMoveX, _lastMoveY);
+    _board._board[_lastMoveX][_lastMoveY] = Board::OurStone;
     return (0);
 }
 
@@ -59,6 +56,7 @@ int Brain::putBoardPiece(int x, int y, Board::TypeStone type)
 int Brain::clear()
 {
     //TODO remove the random
+    ai = AI();
     _board.clear();
     return (0);
 }
@@ -67,6 +65,7 @@ int Brain::getLastMoveX() const
 {
     return (this->_lastMoveX);
 }
+
 int Brain::getLastMoveY() const
 {
     return (this->_lastMoveY);
