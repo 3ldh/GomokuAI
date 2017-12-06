@@ -17,25 +17,18 @@ AI::AI() {
         score_map.push_back(score_mapX);
     }
 
-  /*  map[10][10] = 'O';
-    map[10][11] = 'O';
-    map[10][12] = 'O';
-    map[11][10] = 'X';
-    map[11][11] = 'X';
-    map[11][12] = 'X';
-    map[11][13] = 'X';
+//    update_map('O', 8, 8);
+//    update_map('O', 9, 8);
+//    update_map('X', 9, 7);
+//    update_map('O', 8, 6);
+//    update_score_map(10, 8);
+   // update_score_map(9, 8);
+//    update_score_map(9, 7);
+//    print_map();
 
-    update_score_map(10, 10);;
-    update_score_map(11, 10);
-    update_score_map(11, 10);
-    update_score_map(12, 10);
-    update_score_map(10, 11);
-    update_score_map(11, 11);
-    update_score_map(12, 11);
-    print_map();
+//    update_score_map(8, 6);
 
-    update_score_map(14, 11);
-    find_best_move();*/
+//    find_best_move();
 }
 
 AI::~AI() = default;
@@ -58,7 +51,7 @@ AI::Qtuple_info &AI::find_nb_qtuples_vertical(
     int consecutive_empty = 0;
     int max_consecutive_O = 0;
     int i = 0;
-    for (int y = posY + currI; y + currI != posY + 5 && currI <= 0; ++y, ++i) {
+    for (int y = posY + currI; currI <= 0; ++y, ++i) {
         if (i == 5) {
             i = 0;
             ++currI;
@@ -66,10 +59,12 @@ AI::Qtuple_info &AI::find_nb_qtuples_vertical(
                 max_consecutive_O = consecutive_n;
             consecutive_n = 0;
             consecutive_empty = 0;
-            if (max_consecutive_O > 0)
+            if (max_consecutive_O > 0) {
                 qtuple.convert_to_qtuple(max_consecutive_O);
+                max_consecutive_O = 0;
+            }
             y = posY + currI;
-//            std::cout << std::endl;
+//            std::cout << "ADD " << max_consecutive_O << std::endl;
         }
         //skip iteration if x or y outside the map or if we encounter in the 5 next case the symbol of the opposite player
         if ((y < 0 || y >= MAP_SIZE) || (i == 0 && ((y >= 0 && y < MAP_SIZE && map[y][posX] == playerSymbols[1])
@@ -100,12 +95,12 @@ AI::Qtuple_info &AI::find_nb_qtuples_vertical(
                 qtuple.convert_to_qtuple(0);
                 consecutive_empty = 0;
             }
-            if (max_consecutive_O < consecutive_n)
+          /*  if (max_consecutive_O < consecutive_n)
                 max_consecutive_O = consecutive_n;
             consecutive_n = 0;
             if (max_consecutive_O > 0)
                 qtuple.convert_to_qtuple(max_consecutive_O);
-            max_consecutive_O = 0;
+            max_consecutive_O = 0;*/
         }
     }
 //    std::cout << std::endl << qtuple << std::endl;
@@ -120,7 +115,7 @@ AI::Qtuple_info &AI::find_nb_qtuples_horizontal(
     int consecutive_empty = 0;
     int max_consecutive_O = 0;
     int i = 0;
-    for (int x = posX + currI; x + currI != posX + 5 && currI <= 0; ++x, ++i) {
+    for (int x = posX + currI; currI <= 0; ++x, ++i) {
         if (i == 5) {
             i = 0;
             ++currI;
@@ -128,8 +123,10 @@ AI::Qtuple_info &AI::find_nb_qtuples_horizontal(
                 max_consecutive_O = consecutive_n;
             consecutive_n = 0;
             consecutive_empty = 0;
-            if (max_consecutive_O > 0)
+            if (max_consecutive_O > 0) {
                 qtuple.convert_to_qtuple(max_consecutive_O);
+                max_consecutive_O = 0;
+            }
             x = posX + currI;
 //            std::cout << std::endl;
         }
@@ -163,12 +160,12 @@ AI::Qtuple_info &AI::find_nb_qtuples_horizontal(
                 qtuple.convert_to_qtuple(0);
                 consecutive_empty = 0;
             }
-            if (max_consecutive_O < consecutive_n)
+          /*  if (max_consecutive_O < consecutive_n)
                 max_consecutive_O = consecutive_n;
             consecutive_n = 0;
             if (max_consecutive_O > 0)
                 qtuple.convert_to_qtuple(max_consecutive_O);
-            max_consecutive_O = 0;
+            max_consecutive_O = 0;*/
         }
     }
 //    std::cout << std::endl << qtuple << std::endl;
@@ -183,7 +180,7 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagPos(
     int max_consecutive_O = 0;
     int i = 0;
     int x = posX + currI;
-    for (int y = posY + currI; y + currI != posY + 5 && x + currI != posX + 5 && currI <= 0; ++y, ++x, ++i) {
+    for (int y = posY + currI; currI <= 0; ++y, ++x, ++i) {
         if (i == 5) {
             i = 0;
             ++currI;
@@ -191,8 +188,10 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagPos(
                 max_consecutive_O = consecutive_n;
             consecutive_n = 0;
             consecutive_empty = 0;
-            if (max_consecutive_O > 0)
+            if (max_consecutive_O > 0) {
                 qtuple.convert_to_qtuple(max_consecutive_O);
+                max_consecutive_O = 0;
+            }
             y = posY + currI;
             x = posX + currI;
 //            std::cout << std::endl;
@@ -228,12 +227,12 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagPos(
                 qtuple.convert_to_qtuple(0);
                 consecutive_empty = 0;
             }
-            if (max_consecutive_O < consecutive_n)
+          /*  if (max_consecutive_O < consecutive_n)
                 max_consecutive_O = consecutive_n;
             consecutive_n = 0;
             if (max_consecutive_O > 0)
                 qtuple.convert_to_qtuple(max_consecutive_O);
-            max_consecutive_O = 0;
+            max_consecutive_O = 0;*/
         }
     }
 //    std::cout << std::endl << qtuple << std::endl;
@@ -249,7 +248,7 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
     int max_consecutive_O = 0;
     int i = 0;
     int x = posX + currI;
-    for (int y = posY - currI; y - currI != posY - 5 && x + currI < posX + 5 && currI <= 0; --y, ++x, ++i) {
+    for (int y = posY - currI; currI <= 0; --y, ++x, ++i) {
         if (i == 5) {
             i = 0;
             ++currI;
@@ -257,8 +256,10 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
                 max_consecutive_O = consecutive_n;
             consecutive_n = 0;
             consecutive_empty = 0;
-            if (max_consecutive_O > 0)
+            if (max_consecutive_O > 0) {
                 qtuple.convert_to_qtuple(max_consecutive_O);
+                max_consecutive_O = 0;
+            }
             y = posY - currI;
             x = posX + currI;
 //            std::cout << std::endl;
@@ -294,12 +295,12 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
                 qtuple.convert_to_qtuple(0);
                 consecutive_empty = 0;
             }
-            if (max_consecutive_O < consecutive_n)
+          /*  if (max_consecutive_O < consecutive_n)
                 max_consecutive_O = consecutive_n;
             consecutive_n = 0;
             if (max_consecutive_O > 0)
                 qtuple.convert_to_qtuple(max_consecutive_O);
-            max_consecutive_O = 0;
+            max_consecutive_O = 0;*/
         }
     }
 //    std::cout << std::endl << qtuple << std::endl;
@@ -307,9 +308,19 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
 }
 
 void AI::print_map() {
+    bool print_y;
     for (int y = 0; y < MAP_SIZE; ++y) {
+        std::cout << y << "  ";
+    }
+    std::cout << std::endl;
+    for (int y = 0; y < MAP_SIZE; ++y) {
+        print_y = true;
         for (int x = 0; x < MAP_SIZE; ++x) {
-            std::cout << map[y][x] << " ";
+                if (print_y) {
+                    print_y = false;
+                    std::cout << y << "  ";
+                }
+            std::cout << map[y][x] << "  ";
         }
         std::cout << std::endl;
     }
@@ -334,7 +345,7 @@ void AI::update_score_map(int posX, int posY) {
                     Qtuple_info qtupleXO = find_nb_qtuples("XO", posX + x, posY + y);
                     score_map[posY + y][posX + x] = qtupleOX.comptue_score('O') + qtupleXO.comptue_score('X');
                 }
-            }
+           }
         }
     }
 //    print_score_map();
@@ -369,5 +380,16 @@ void AI::update_map(char playerSymbol, int x, int y) {
        /* if (playerSymbol == 'O')
             print_map();*/
     }
+}
+
+std::unique_ptr<AI::Point> AI::first_move() const {
+    int x = randomRange(4, MAP_SIZE - 4);
+    int y = randomRange(4, MAP_SIZE - 4);
+    auto p = std::unique_ptr<Point>(new Point(x, y));
+    return std::move(p);
+}
+
+int AI::randomRange(int min, int max) const {
+    return min + rand() % (max - min);
 }
 

@@ -4,14 +4,12 @@
 
 #include <cstdlib>
 #include "Brain.h"
-
-//TODO remove time
 #include <ctime>
+
 Brain::Brain() : ai(AI())
 {
     _lastMoveX = 0;
     _lastMoveY = 0;
-    //TODO remove the random
     std::srand(std::time(0));
     _board.clear();
 }
@@ -39,9 +37,12 @@ int Brain::calculateTurn(int x, int y)
 //TODO remove the random
 int Brain::putFirstPiece()
 {
-    _lastMoveX = 10;
-    _lastMoveY = 10;
-    _board._board[10][10] = Board::OurStone;
+    std::unique_ptr<AI::Point> p = ai.first_move();
+    _lastMoveX = p->x;
+    _lastMoveY = p->y;
+    ai.update_map('O', _lastMoveX, _lastMoveY);
+    ai.update_score_map(_lastMoveX, _lastMoveY);
+    _board._board[_lastMoveX][_lastMoveY] = Board::OurStone;
     return (0);
 }
 
@@ -64,6 +65,7 @@ int Brain::getLastMoveX() const
 {
     return (this->_lastMoveX);
 }
+
 int Brain::getLastMoveY() const
 {
     return (this->_lastMoveY);

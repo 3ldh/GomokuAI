@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <iostream>
+#include <memory>
 
 class AI {
 
@@ -77,15 +78,17 @@ public:
     struct Point {
         int x;
         int y;
-        Point(int x = 0, int y = 0) : x(x), y(y){};
+
+        Point(int x = 0, int y = 0) : x(x), y(y) {};
     };
 
 private :
     std::vector<std::vector<char>> map;
     std::vector<std::vector<int>> score_map;
 
-    void print_map();
+    int randomRange(int min, int max) const;
     void print_score_map();
+    void print_map();
     Qtuple_info &find_nb_qtuples_vertical(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_horizontal(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_DiagPos(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
@@ -98,21 +101,9 @@ public:
     void update_score_map(int posX, int posY);
     Point const &find_best_move() const;
     void update_map(char playerSymbol, int x, int y);
-
+    std::unique_ptr<Point> first_move() const;
 };
 
-template <typename I>
-I random_element(I begin, I end)
-{
-    const unsigned long n = std::distance(begin, end);
-    const unsigned long divisor = (RAND_MAX + 1) / n;
-
-    unsigned long k;
-    do { k = std::rand() / divisor; } while (k >= n);
-
-    std::advance(begin, k);
-    return begin;
-}
 
 
 #endif //GOMOKU_IA_H

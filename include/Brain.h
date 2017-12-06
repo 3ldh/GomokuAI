@@ -8,6 +8,7 @@
 #include "Board.h"
 #include "AI.h"
 
+
 class Brain{
 private:
     int _lastMoveX;
