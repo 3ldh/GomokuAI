@@ -21,7 +21,7 @@ Board::Board()
     }
 }
 
-void    Board::clear()
+void    Board::reset()
 {
     int i = 0;
     int j;

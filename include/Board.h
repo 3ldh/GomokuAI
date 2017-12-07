@@ -17,7 +17,7 @@ struct Board{
     TypeStone _board[WIDTH_BOARD][WIDTH_BOARD];
 
     Board();
-    void clear();
+    void reset();
 };
 
 #endif //GOMOKU_BOARD_H

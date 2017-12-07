@@ -36,7 +36,7 @@ int     Core::proceedStart(std::stringstream &inputStream)
     else if (width != WIDTH_BOARD)
         return (_com.sendCommand(Communication::CmdError, "Start: Incorrect width or height"));
     _state = StateStart;
-    _board.clear();
+    _board.reset();
     return (_com.sendOk());
 }
 
@@ -96,7 +96,7 @@ int                 Core::proceedBoard(std::stringstream &inputStream)
     if (_state == StateStart)
     {
         _state = StateBoard;
-        _board.clear();
+        _board.reset();
         _brain.clear();
         return (0);
     }
