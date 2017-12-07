@@ -6,6 +6,7 @@
 #include "AI.h"
 
 AI::AI() {
+    _end = false;
     for (int y = 0; y < MAP_SIZE; ++y) {
         std::vector<char> mapX;
         std::vector<int> score_mapX;
@@ -393,3 +394,7 @@ int AI::randomRange(int min, int max) const {
     return min + rand() % (max - min);
 }
 
+void AI::signalEnd()
+{
+    _end = true;
+}

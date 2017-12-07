@@ -18,7 +18,7 @@ Brain::~Brain()
 
 }
 
-Brain::BrainState Brain::calculateTurn(int x, int y)
+int Brain::calculateTurn(int x, int y)
 {
     AI::Point p;
 
@@ -29,7 +29,7 @@ Brain::BrainState Brain::calculateTurn(int x, int y)
     ai.update_score_map(p.x, p.y);
     _lastMoveX = p.x;
     _lastMoveY = p.y;
-    return (Brain::BrainEnd);
+    return (0);
 }
 
 int Brain::putFirstPiece()
@@ -66,4 +66,9 @@ int Brain::getLastMoveX() const
 int Brain::getLastMoveY() const
 {
     return (this->_lastMoveY);
+}
+
+void Brain::signalEnd()
+{
+    ai.signalEnd();
 }

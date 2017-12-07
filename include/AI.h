@@ -72,6 +72,8 @@ class AI {
         }
     };
 
+    bool _end;
+
     static const int MAP_SIZE = 19;
 
 public:
@@ -102,6 +104,7 @@ public:
     Point const &find_best_move() const;
     void update_map(char playerSymbol, int x, int y);
     std::unique_ptr<Point> first_move() const;
+    void signalEnd();
 };
 
 

@@ -11,11 +11,6 @@
 
 class Brain{
 public:
-    enum BrainState {
-        BrainContinue = 0,
-        BrainEnd,
-        BrainError,
-    };
 private:
     int _lastMoveX;
     int _lastMoveY;
@@ -24,12 +19,13 @@ private:
 public:
     Brain();
     ~Brain();
-    BrainState calculateTurn(int x, int y);
+    int calculateTurn(int x, int y);
     int putFirstPiece();
     int putBoardPiece(int x, int y, Board::TypeStone type);
     int getLastMoveX() const;
     int getLastMoveY() const;
     int clear();
+    void signalEnd();
 };
 
 #endif //GOMOKU_BRAIN_H

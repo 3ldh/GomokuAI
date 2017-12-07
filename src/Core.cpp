@@ -197,13 +197,7 @@ int                     Core::readAndProceedCommand()
 
 int                     Core::proceedThreadTurn(int x, int y)
 {
-    Brain::BrainState   state = Brain::BrainContinue;
-
-    while (state == Brain::BrainContinue && _state != StateEnd)
-        state = _brain.calculateTurn(x, y);
-    if (_state == StateEnd)
-        return (0);
-    if (state == Brain::BrainError)
+    if (_brain.calculateTurn(x, y) == -1)
         return (_com.sendCommand(Communication::CmdError, "Turn: Fatal Error of Brain"));
     x = _brain.getLastMoveX();
     y = _brain.getLastMoveY();
