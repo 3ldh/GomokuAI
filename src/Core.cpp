@@ -195,9 +195,15 @@ int                     Core::readAndProceedCommand()
     return (_com.sendCommand(Communication::CmdUnknown, "Unknown command"));
 }
 
-int Core::proceedThreadTurn(int x, int y)
+int                     Core::proceedThreadTurn(int x, int y)
 {
-    if (_brain.calculateTurn(x, y) == -1)
+    Brain::BrainState   state = Brain::BrainContinue;
+
+    while (state == Brain::BrainContinue && _state != StateEnd)
+        state = _brain.calculateTurn(x, y);
+    if (_state == StateEnd)
+        return (0);
+    if (state == Brain::BrainError)
         return (_com.sendCommand(Communication::CmdError, "Turn: Fatal Error of Brain"));
     x = _brain.getLastMoveX();
     y = _brain.getLastMoveY();
@@ -205,9 +211,9 @@ int Core::proceedThreadTurn(int x, int y)
     return (_com.sendCoord(x, y));
 }
 
-int Core::runAndProceedTurn()
+int             Core::runAndProceedTurn()
 {
-    Position pos;
+    Position    pos;
 
     while (_state != StateEnd)
     {
@@ -234,6 +240,7 @@ int             Core::run()
     {
         if (readAndProceedCommand() == -1)
         {
+            _state = StateEnd;
             _cond.notify_one();
             thrd.join();
             return (-1);

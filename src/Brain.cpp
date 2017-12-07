@@ -10,8 +10,7 @@ Brain::Brain() : ai(AI())
 {
     _lastMoveX = 0;
     _lastMoveY = 0;
-    std::srand(std::time(0));
-    _board.clear();
+    std::srand(static_cast<unsigned int>(std::time(0)));
 }
 
 Brain::~Brain()
@@ -19,7 +18,7 @@ Brain::~Brain()
 
 }
 
-int Brain::calculateTurn(int x, int y)
+Brain::BrainState Brain::calculateTurn(int x, int y)
 {
     AI::Point p;
 
@@ -30,11 +29,9 @@ int Brain::calculateTurn(int x, int y)
     ai.update_score_map(p.x, p.y);
     _lastMoveX = p.x;
     _lastMoveY = p.y;
-    _board._board[p.x][p.y] = Board::OurStone;
-    return (0);
+    return (Brain::BrainEnd);
 }
 
-//TODO remove the random
 int Brain::putFirstPiece()
 {
     std::unique_ptr<AI::Point> p = ai.first_move();
@@ -42,22 +39,22 @@ int Brain::putFirstPiece()
     _lastMoveY = p->y;
     ai.update_map('O', _lastMoveX, _lastMoveY);
     ai.update_score_map(_lastMoveX, _lastMoveY);
-    _board._board[_lastMoveX][_lastMoveY] = Board::OurStone;
     return (0);
 }
 
 int Brain::putBoardPiece(int x, int y, Board::TypeStone type)
 {
-    //TODO remove the random
-    _board._board[x][y] = type;
+    if (type == Board::TheirStone)
+        ai.update_map('X', x, y);
+    else if (type == Board::OurStone)
+        ai.update_map('O', x, y);
+    ai.update_score_map(x, y);
     return (0);
 }
 
 int Brain::clear()
 {
-    //TODO remove the random
     ai = AI();
-    _board.clear();
     return (0);
 }
 

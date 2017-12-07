@@ -10,17 +10,21 @@
 
 
 class Brain{
+public:
+    enum BrainState {
+        BrainContinue = 0,
+        BrainEnd,
+        BrainError,
+    };
 private:
     int _lastMoveX;
     int _lastMoveY;
-    //TODO remove
-    Board _board;
     AI ai;
 
 public:
     Brain();
     ~Brain();
-    int calculateTurn(int x, int y);
+    BrainState calculateTurn(int x, int y);
     int putFirstPiece();
     int putBoardPiece(int x, int y, Board::TypeStone type);
     int getLastMoveX() const;
