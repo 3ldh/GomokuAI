@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include "Brain.h"
 #include <ctime>
+#include <unistd.h>
 
 Brain::Brain() : ai(AI())
 {
@@ -19,6 +20,9 @@ Brain::~Brain()
 
 }
 
+//TODO remove sleep
+#include <afxres.h>
+
 int Brain::calculateTurn(int x, int y)
 {
     AI::Point p;
@@ -31,6 +35,7 @@ int Brain::calculateTurn(int x, int y)
     _lastMoveX = p.x;
     _lastMoveY = p.y;
     _board._board[p.x][p.y] = Board::OurStone;
+    Sleep(2000);
     return (0);
 }
 
