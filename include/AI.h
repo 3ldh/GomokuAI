@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include "Point.h"
 
 class AI {
 
@@ -77,12 +78,6 @@ class AI {
     static const int MAP_SIZE = 19;
 
 public:
-    struct Point {
-        int x;
-        int y;
-
-        Point(int x = 0, int y = 0) : x(x), y(y) {};
-    };
 
 private :
     std::vector<std::vector<char>> map;

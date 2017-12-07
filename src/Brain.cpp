@@ -3,8 +3,8 @@
 //
 
 #include <cstdlib>
-#include "Brain.h"
 #include <ctime>
+#include "Brain.h"
 
 Brain::Brain() : ai(AI())
 {
@@ -20,7 +20,7 @@ Brain::~Brain()
 
 int Brain::calculateTurn(int x, int y)
 {
-    AI::Point p;
+    Point p;
 
     ai.update_map('X', x, y);
     ai.update_score_map(x, y);
@@ -34,7 +34,7 @@ int Brain::calculateTurn(int x, int y)
 
 int Brain::putFirstPiece()
 {
-    std::unique_ptr<AI::Point> p = ai.first_move();
+    std::unique_ptr<Point> p = ai.first_move();
     _lastMoveX = p->x;
     _lastMoveY = p->y;
     ai.update_map('O', _lastMoveX, _lastMoveY);
@@ -58,12 +58,12 @@ int Brain::clear()
     return (0);
 }
 
-int Brain::getLastMoveX() const
+unsigned int Brain::getLastMoveX() const
 {
     return (this->_lastMoveX);
 }
 
-int Brain::getLastMoveY() const
+unsigned int Brain::getLastMoveY() const
 {
     return (this->_lastMoveY);
 }

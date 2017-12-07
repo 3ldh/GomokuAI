@@ -16,6 +16,6 @@ set(INCLUDE_FILES
         include/Board.h
         include/Brain.h
         src/Communication.cpp
-        include/AI.h)
+        include/AI.h include/Point.h)
 
 add_executable(pbrain-LookAtMyBigBrain ${SOURCE_FILES} ${INCLUDE_FILES})

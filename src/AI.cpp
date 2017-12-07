@@ -352,7 +352,7 @@ void AI::update_score_map(int posX, int posY) {
 //    print_score_map();
 }
 
-AI::Point const &AI::find_best_move() const {
+Point const &AI::find_best_move() const {
     Point *p = new Point();
     int max_value = 0;
 
@@ -383,7 +383,7 @@ void AI::update_map(char playerSymbol, int x, int y) {
     }
 }
 
-std::unique_ptr<AI::Point> AI::first_move() const {
+std::unique_ptr<Point> AI::first_move() const {
     int x = randomRange(4, MAP_SIZE - 4);
     int y = randomRange(4, MAP_SIZE - 4);
     auto p = std::unique_ptr<Point>(new Point(x, y));

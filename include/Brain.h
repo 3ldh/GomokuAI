@@ -12,8 +12,8 @@
 class Brain{
 public:
 private:
-    int _lastMoveX;
-    int _lastMoveY;
+    unsigned int _lastMoveX;
+    unsigned int _lastMoveY;
     AI ai;
 
 public:
@@ -22,8 +22,8 @@ public:
     int calculateTurn(int x, int y);
     int putFirstPiece();
     int putBoardPiece(int x, int y, Board::TypeStone type);
-    int getLastMoveX() const;
-    int getLastMoveY() const;
+    unsigned int getLastMoveX() const;
+    unsigned int getLastMoveY() const;
     int clear();
     void signalEnd();
 };

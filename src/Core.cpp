@@ -59,7 +59,7 @@ int     Core::proceedTurn(std::stringstream &inputStream)
         return (_com.sendCommand(Communication::CmdError, "Turn: Incorrect position"));
     _board._board[x][y] = Board::TheirStone;
 	std::unique_lock<std::mutex> lck(_mutex);
-    _queue.push(Position(x, y));
+    _queue.push(Point(x, y));
 	_cond.notify_one();
     lck.unlock();
     return (0);
@@ -88,8 +88,8 @@ int             Core::proceedBegin(std::stringstream &inputStream)
 int                 Core::proceedBoard(std::stringstream &inputStream)
 {
     std::string         str;
-    int                 x;
-    int                 y;
+    unsigned int        x;
+    unsigned int        y;
     char                separator;
     int                 type;
 
@@ -207,7 +207,7 @@ int                     Core::proceedThreadTurn(int x, int y)
 
 int             Core::runAndProceedTurn()
 {
-    Position    pos;
+    Point    pos;
 
     while (_state != StateEnd)
     {
