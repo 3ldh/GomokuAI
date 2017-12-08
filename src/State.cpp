@@ -2,15 +2,23 @@
 // Created by Mathieu on 07/12/2017.
 //
 
+#include <limits>
 #include "State.h"
 
 State::State() : ai(AI()), playerNb(0), visitCount(0), score(0) {}
 
-State::State(std::unique_ptr<State> const &state) {
+State::State(std::shared_ptr<State> const &state) {
     ai = AI(state->ai);
     playerNb = state->getPlayer();
     score = state->getScore();
     visitCount = state->getVisitCount();
+}
+
+State::State(AI const &ai) {
+    this->ai = AI(ai);
+    playerNb = 0;
+    visitCount = 0;
+    score = 0;
 }
 
 State::~State() {
@@ -45,15 +53,16 @@ void State::setPlayer(int player) {
     State::playerNb = player;
 }
 
-std::vector<State> &&State::getAllNextStates() {
-    std::vector<State> states;
+std::vector<std::shared_ptr<State>> &&State::getAllNextStates() {
+    std::vector<std::shared_ptr<State>> states;
     std::vector<AI::Point> points = ai.getBestScoreSquares(NB_OF_BEST_SCORE_TO_SEARCH);
 
     for (auto &point: points) {
-        State state;
-        state.setPlayer(3 - playerNb)
-        state.getAi().update_map((state.playerNb == 1 ? '0' : 'X'), point.x, point.y);
-        states.push_back(state);
+        std::shared_ptr<State> newState = std::make_shared<State>(ai);
+        newState->setPlayer(3 - playerNb);
+        AI ai = newState->getAi();
+        ai.update_map((newState->playerNb == 1 ? '0' : 'X'), point.x, point.y);
+        states.push_back(newState);
     }
     return std::move(states);
 }
@@ -75,8 +84,15 @@ void State::togglePlayerNb() {
 }
 
 void State::randomPlay() {
-    std::vector<AI::Point> availablePositions = board.getEmptyPositions();
-    int totalPossibilities = availablePositions.size();
-    int selectRandom = (int) (Math.random() * ((totalPossibilities - 1) + 1));
-    this.board.performMove(this.playerNo, availablePositions.get(selectRandom));
+    std::vector<AI::Point> points = ai.getBestScoreSquares(NB_OF_BEST_SCORE_TO_SEARCH);
+
+    int r = AI::randomRange(0, points.size());
+    ai.update_map(playerNb == 2 ? 'X' : 'O', points[r].x, points[r].y);
+    ai.update_score_map(points[r].x, points[r].y);
 }
+
+void State::addScore(double s) {
+    if (s != std::numeric_limits<int>::min())
+        score += s;
+}
+

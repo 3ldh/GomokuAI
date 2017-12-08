@@ -4,20 +4,22 @@
 
 #include "Node.h"
 
+#include <utility>
+
 Node::~Node() {}
 
 Node::Node() {
     state = std::make_shared<State>();
-    parent = std::make_shared<Node>();
+    parent = nullptr;
 }
 
-Node::Node(std::shared_ptr<State> &state, std::shared_ptr<Node> parent,
-           std::vector<std::shared_ptr<Node>> children) : state(std::move(state)), parent(std::move(parent)), children(
-        std::move(children)) {
-
+Node::Node(const std::shared_ptr<State> &state) {
+    Node::state = std::make_shared<State>(state);
+    std::cout << "YOLOOO..." << state.use_count() << std::endl;
+    parent = nullptr;
 }
 
-Node::Node(std::shared_ptr<Node> node) {
+Node::Node(const std::shared_ptr<Node> &node) {
     state = node->getState();
     if (node->getParent() != nullptr)
         parent = node->getParent();
@@ -32,19 +34,19 @@ Node &Node::operator=(Node const &node) {
     children = node.getChildren();
 }
 
-void Node::setState(std::shared_ptr<State> &state) {
-    Node::state = std::move(state);
+void Node::setState(std::shared_ptr<State> const &state) {
+    Node::state = state;
 }
 
-const std::shared_ptr<State> &Node::getState() const {
+std::shared_ptr<State> Node::getState() const {
     return state;
 }
 
-const std::shared_ptr<Node> &Node::getParent() const {
+std::shared_ptr<Node> Node::getParent() const {
     return parent;
 }
 
-void Node::setParent(const std::shared_ptr<Node> &parent) {
+void Node::setParent(std::shared_ptr<Node> const &parent) {
     Node::parent = parent;
 }
 
@@ -64,6 +66,7 @@ std::shared_ptr<Node> Node::getRandomChildNode() {
     int r = AI::randomRange(0, children.size());
     return children[r];
 }
+
 
 
 

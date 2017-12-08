@@ -7,15 +7,18 @@
 
 #include "Board.h"
 #include "AI.h"
+#include "MonteCarlo.h"
 
 
 class Brain{
 private:
     int _lastMoveX;
     int _lastMoveY;
+    bool firstPlayer;
     //TODO remove
     Board _board;
     AI ai;
+    MonteCarlo monteCarlo;
 
 public:
     Brain();

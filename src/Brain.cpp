@@ -9,6 +9,7 @@
 
 Brain::Brain() : ai(AI())
 {
+    firstPlayer = false;
     _lastMoveX = 0;
     _lastMoveY = 0;
     std::srand(std::time(0));
@@ -20,28 +21,32 @@ Brain::~Brain()
 
 }
 
-//TODO remove sleep
-#include <afxres.h>
-
 int Brain::calculateTurn(int x, int y)
 {
     AI::Point p;
 
     ai.update_map('X', x, y);
     ai.update_score_map(x, y);
-    p = ai.find_best_move();
+    ai.print_score_map();
+
+    /*p = ai.find_best_move();
+    */
+    p = monteCarlo.findNextMove(ai, 1);
     ai.update_map('O', p.x, p.y);
     ai.update_score_map(p.x, p.y);
+    ai.printMap();
+    ai.print_score_map();
+
     _lastMoveX = p.x;
     _lastMoveY = p.y;
     _board._board[p.x][p.y] = Board::OurStone;
-    Sleep(2000);
     return (0);
 }
 
 //TODO remove the random
 int Brain::putFirstPiece()
 {
+    firstPlayer = true;
     std::unique_ptr<AI::Point> p = ai.first_move();
     _lastMoveX = p->x;
     _lastMoveY = p->y;

@@ -10,7 +10,7 @@
 
 class State {
 
-#define NB_OF_BEST_SCORE_TO_SEARCH 20
+#define NB_OF_BEST_SCORE_TO_SEARCH 10
 
 private:
     AI ai;
@@ -20,7 +20,8 @@ private:
 
 public:
     State();
-    explicit State(std::unique_ptr<State> const &state);
+    explicit State(std::shared_ptr<State> const &state);
+    explicit State(AI const &ai);
     virtual ~State();
 
 
@@ -35,14 +36,11 @@ public:
     void incrementVisit();
     int getPlayer() const;
     void setPlayer(int player);
-    std::vector<State> &&getAllNextStates();
+    std::vector<std::shared_ptr<State>> &&getAllNextStates();
     int getAdversary();
     void togglePlayerNb();
     void randomPlay();
-/*
-    const std::vector<std::vector<char>> &getMap() const;
-    const std::vector<std::vector<int>> &getScoreMap() const;
-*/
+    void addScore(double s);
 };
 
 

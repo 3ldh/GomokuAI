@@ -18,15 +18,15 @@ class Node {
 
 public:
     Node();
-    Node(std::shared_ptr<Node> node);
-    Node(std::shared_ptr<State> &state, std::shared_ptr<Node> parent, std::vector<std::shared_ptr<Node>> children);
+    explicit Node(const std::shared_ptr<Node> &node);
+    explicit Node(const std::shared_ptr<State> &state);
 
     Node &operator=(Node const &node);
     virtual ~Node();
-    void setState(std::shared_ptr<State> &state);
-    const std::shared_ptr<State> &getState() const;
-    const std::shared_ptr<Node> &getParent() const;
-    void setParent(const std::shared_ptr<Node> &parent);
+    void setState(std::shared_ptr<State> const &state);
+    std::shared_ptr<State> getState() const;
+    std::shared_ptr<Node> getParent() const;
+    void setParent(std::shared_ptr<Node> const &parent);
     std::vector<std::shared_ptr<Node>> &getChildren();
     const std::vector<std::shared_ptr<Node>> &getChildren() const;
     void setChildren(const std::vector<std::shared_ptr<Node>> &children);

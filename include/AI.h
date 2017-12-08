@@ -75,10 +75,10 @@ class AI {
 
 public:
     enum STATUS {
-        WIN,
-        LOOSE,
-        DRAW
-        IN_PROGRESS,
+        IN_PROGRESS = -1,
+        DRAW = 0,
+        WIN = 1,
+        LOOSE = 2,
     };
 
     struct Point {
@@ -86,14 +86,18 @@ public:
         int y;
 
         explicit Point(int x = 0, int y = 0) : x(x), y(y) {};
+        friend std::ostream &operator<<(std::ostream &os, const Point &p) {
+            os << "(" << p.x << ", " << p.y << ") ";
+            return os;
+        }
     };
 
 private :
     std::vector<std::vector<char>> map;
     std::vector<std::vector<int>> score_map;
 
-    void print_score_map();
-    void print_map();
+    bool isPointPresent(std::vector<Point> const &points, Point const &p) const;
+
     Qtuple_info &find_nb_qtuples_vertical(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_horizontal(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_DiagPos(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
@@ -107,14 +111,16 @@ public:
     void update_score_map(int posX, int posY);
     Point const &find_best_move() const;
     void update_map(char playerSymbol, int x, int y);
-    std::vector<Point> &&getBestScoreSquares(int nbSquares);
+    std::vector<Point> getBestScoreSquares(int nbSquares);
     std::unique_ptr<Point> first_move() const;
     const std::vector<std::vector<char>> &getMap() const;
     void setMap(const std::vector<std::vector<char>> &map);
-    const std::vector<std::vector<int>> &getScore_map() const;
-    void setScore_map(const std::vector<std::vector<int>> &score_map);
-    static int randomRange(int min, int max) const;
+    const std::vector<std::vector<int>> &getScoreMap() const;
+    void setScoreMap(const std::vector<std::vector<int>> &score_map);
+    static int randomRange(int min, int max);
     int checkStatus();
+    void print_score_map();
+    void printMap();
 };
 
 #endif //GOMOKU_IA_H

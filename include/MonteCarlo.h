@@ -7,10 +7,11 @@
 
 
 #include "AI.h"
+#include "Node.h"
 
 class MonteCarlo {
-private
-    static final int WIN_SCORE = 10;
+private :
+    static const int WIN_SCORE = 10;
     int opponent;
     long getCurrentTime();
     void expandNode(std::shared_ptr<Node> node);

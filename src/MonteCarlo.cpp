@@ -30,11 +30,12 @@ const AI::Point &MonteCarlo::findNextMove(const AI &ai, int playerNb) {
     opponent = 3 - playerNb;
 
     while (getCurrentTime() < end) {
+        std::cout << "Time : " << getCurrentTime() << std::endl;
         //Phase 1 selection
         std::shared_ptr<Node> nextBestNode = findNextBestNode(root);
-        //if (nextBestNode.getState()->getAi().getStatus == IN_PROGRESS)
         //Phase 2 expansion
-        expandNode(nextBestNode);
+        if (nextBestNode->getState()->getAi().checkStatus() == AI::IN_PROGRESS)
+            expandNode(nextBestNode);
         //Phase 3  Simulation
         std::shared_ptr<Node> nodeToExplore = nextBestNode;
         if (nextBestNode->getChildren().size() > 0) {
@@ -43,22 +44,25 @@ const AI::Point &MonteCarlo::findNextMove(const AI &ai, int playerNb) {
         int playResult = simulatePlay(nodeToExplore);
 
         // Phase 4 - Update
-        backPropogation(nodeToExplore, playoutResult);
+        backPropagation(nodeToExplore, playResult);
     }
 }
 
 const std::shared_ptr<Node> MonteCarlo::findNextBestNode(const std::shared_ptr<Node> rootNode) {
     std::shared_ptr<Node> node = rootNode;
     while (!node->getChildren().empty()) {
+        std::cout << "Finding Next best node...." << std::endl;
         node = UCT::findNodeWithBestUCT(node);
     }
     return node;
 }
 
 void MonteCarlo::expandNode(std::shared_ptr<Node> node) {
-    std::vector<State> allNextStates = node->getState()->getAllNextStates();
+    std::vector<std::shared_ptr<State>> allNextStates = node->getState()->getAllNextStates();
 
+    std::cout << "SIZE NEXTSTATES " << allNextStates.size() << std::endl;
     for (auto &state: allNextStates) {
+        std::cout << "Expanding Node...." << state.use_count() <<std::endl;
         std::shared_ptr<Node> newNode = std::make_shared<Node>(state);
         newNode->setParent(node);
         newNode->getState()->setPlayer(node->getState()->getAdversary());
@@ -76,6 +80,7 @@ int MonteCarlo::simulatePlay(std::shared_ptr<Node> node) {
         return gameStatus;
     }
     while (gameStatus == AI::IN_PROGRESS) {
+        std::cout << "Simulating random Play..." << std::endl;
         tmpState->togglePlayerNb();
         tmpState->randomPlay();
         gameStatus = tmpState->getAi().checkStatus();
@@ -84,5 +89,12 @@ int MonteCarlo::simulatePlay(std::shared_ptr<Node> node) {
 }
 
 void MonteCarlo::backPropagation(std::shared_ptr<Node> node, int playerNb) {
-
+    std::shared_ptr<Node> tmpNode = node;
+    while (tmpNode != nullptr) {
+        std::cout << "Backpropagation..." << std::endl;
+        tmpNode->getState()->incrementVisit();
+        if (tmpNode->getState()->getPlayer() == playerNb)
+            tmpNode->getState()->addScore(WIN_SCORE);
+        tmpNode = tmpNode->getParent();
+    }
 }
