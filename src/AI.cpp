@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <algorithm>
 #include "AI.h"
 
 AI::AI() {
@@ -18,18 +19,27 @@ AI::AI() {
         score_map.push_back(score_mapX);
     }
 
-//    update_map('O', 8, 8);
-//    update_map('O', 9, 8);
+    /*   update_map('O', 8, 8);
+       update_score_map(8, 8);
+       getBestScoreSquares(10);
+   */
+
 //    update_map('X', 9, 7);
 //    update_map('O', 8, 6);
 //    update_score_map(10, 8);
-   // update_score_map(9, 8);
+    // update_score_map(9, 8);
 //    update_score_map(9, 7);
-//    print_map();
+//    printMap();
 
 //    update_score_map(8, 6);
 
 //    find_best_move();
+}
+
+
+AI::AI(const AI &ai) {
+    map = ai.map;
+    score_map = ai.score_map;
 }
 
 AI::~AI() = default;
@@ -96,12 +106,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_vertical(
                 qtuple.convert_to_qtuple(0);
                 consecutive_empty = 0;
             }
-          /*  if (max_consecutive_O < consecutive_n)
-                max_consecutive_O = consecutive_n;
-            consecutive_n = 0;
-            if (max_consecutive_O > 0)
-                qtuple.convert_to_qtuple(max_consecutive_O);
-            max_consecutive_O = 0;*/
         }
     }
 //    std::cout << std::endl << qtuple << std::endl;
@@ -161,12 +165,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_horizontal(
                 qtuple.convert_to_qtuple(0);
                 consecutive_empty = 0;
             }
-          /*  if (max_consecutive_O < consecutive_n)
-                max_consecutive_O = consecutive_n;
-            consecutive_n = 0;
-            if (max_consecutive_O > 0)
-                qtuple.convert_to_qtuple(max_consecutive_O);
-            max_consecutive_O = 0;*/
         }
     }
 //    std::cout << std::endl << qtuple << std::endl;
@@ -228,12 +226,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagPos(
                 qtuple.convert_to_qtuple(0);
                 consecutive_empty = 0;
             }
-          /*  if (max_consecutive_O < consecutive_n)
-                max_consecutive_O = consecutive_n;
-            consecutive_n = 0;
-            if (max_consecutive_O > 0)
-                qtuple.convert_to_qtuple(max_consecutive_O);
-            max_consecutive_O = 0;*/
         }
     }
 //    std::cout << std::endl << qtuple << std::endl;
@@ -296,19 +288,13 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
                 qtuple.convert_to_qtuple(0);
                 consecutive_empty = 0;
             }
-          /*  if (max_consecutive_O < consecutive_n)
-                max_consecutive_O = consecutive_n;
-            consecutive_n = 0;
-            if (max_consecutive_O > 0)
-                qtuple.convert_to_qtuple(max_consecutive_O);
-            max_consecutive_O = 0;*/
         }
     }
 //    std::cout << std::endl << qtuple << std::endl;
     return qtuple;
 }
 
-void AI::print_map() {
+void AI::printMap() {
     bool print_y;
     for (int y = 0; y < MAP_SIZE; ++y) {
         std::cout << y << "  ";
@@ -317,10 +303,10 @@ void AI::print_map() {
     for (int y = 0; y < MAP_SIZE; ++y) {
         print_y = true;
         for (int x = 0; x < MAP_SIZE; ++x) {
-                if (print_y) {
-                    print_y = false;
-                    std::cout << y << "  ";
-                }
+            if (print_y) {
+                print_y = false;
+                std::cout << y << " ";
+            }
             std::cout << map[y][x] << "  ";
         }
         std::cout << std::endl;
@@ -344,9 +330,12 @@ void AI::update_score_map(int posX, int posY) {
                 if (map[posY + y][posX + x] == '.') {
                     Qtuple_info qtupleOX = find_nb_qtuples("OX", posX + x, posY + y);
                     Qtuple_info qtupleXO = find_nb_qtuples("XO", posX + x, posY + y);
-                    score_map[posY + y][posX + x] = qtupleOX.comptue_score('O') + qtupleXO.comptue_score('X');
+                    if (playerNb == 2)
+                        score_map[posY + y][posX + x] = qtupleOX.comptue_score('O') + qtupleXO.comptue_score('X');
+                    else if (playerNb == 1)
+                        score_map[posY + y][posX + x] = qtupleOX.comptue_score('X') + qtupleXO.comptue_score('O');
                 }
-           }
+            }
         }
     }
 //    print_score_map();
@@ -378,23 +367,115 @@ void AI::update_map(char playerSymbol, int x, int y) {
     if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
         map[y][x] = playerSymbol;
         score_map[y][x] = -1;
-       /* if (playerSymbol == 'O')
-            print_map();*/
+        positionPlayed = Point(x, y);
+        /* if (playerSymbol == 'O')
+             printMap();*/
     }
 }
 
 std::unique_ptr<Point> AI::first_move() const {
     int x = randomRange(4, MAP_SIZE - 4);
     int y = randomRange(4, MAP_SIZE - 4);
-    auto p = std::unique_ptr<Point>(new Point(x, y));
+    auto p = std::make_unique<Point>(x, y);
     return std::move(p);
 }
 
-int AI::randomRange(int min, int max) const {
+int AI::randomRange(int min, int max) {
     return min + rand() % (max - min);
 }
 
 void AI::signalEnd()
 {
     _end = true;
+}
+
+const std::vector<std::vector<char>> &AI::getMap() const {
+    return map;
+}
+
+void AI::setMap(const std::vector<std::vector<char>> &map) {
+    AI::map = map;
+}
+
+const std::vector<std::vector<int>> &AI::getScoreMap() const {
+    return score_map;
+}
+
+void AI::setScoreMap(const std::vector<std::vector<int>> &score_map) {
+    AI::score_map = score_map;
+}
+
+bool AI::isPointPresent(std::vector<Point> const &points, Point const &p) const {
+    for (auto &point: points) {
+        if (p.x == point.x && p.y == point.y)
+            return true;
+    }
+    return false;
+}
+
+std::vector<Point> AI::getBestScoreSquares(int nbSquares) {
+    std::vector<Point> points;
+    Point p;
+    int max_value;
+    while (nbSquares > 0) {
+        p.x = 0;
+        p.y = 0;
+        max_value = 0;
+        for (int y = 0; y < MAP_SIZE; ++y) {
+            for (int x = 0; x < MAP_SIZE; ++x) {
+                if (!points.empty()) {
+                    if (!isPointPresent(points, Point(x, y)) && max_value <= score_map[y][x]) {
+                        max_value = score_map[y][x];
+                        p.x = x;
+                        p.y = y;
+                    }
+                } else if (max_value < score_map[y][x]) {
+                    max_value = score_map[y][x];
+                    p.x = x;
+                    p.y = y;
+                }
+            }
+        }
+        points.push_back(p);
+        --nbSquares;
+    }
+   /* for (auto point : points) {
+        std::cout << point << std::endl;
+    }*/
+    return points;
+}
+
+int AI::checkStatus() {
+    STATUS status = IN_PROGRESS;
+    bool draw = true;
+
+    for (int y = 0; y < MAP_SIZE; ++y) {
+        for (int x = 0; x < MAP_SIZE; ++x) {
+            if (score_map[y][x] != -1) {
+                draw = false;
+            }
+            if (score_map[y][x] >= Qtuple_info::OOOO_SCORE) {
+                return WIN;
+            } else if (score_map[y][x] >= Qtuple_info::XXXX_SCORE  && score_map[y][x] < Qtuple_info::OOOO_SCORE) {
+                return LOOSE;
+            } else {
+                status = IN_PROGRESS;
+            }
+        }
+    }
+    if (draw)
+        status = DRAW;
+    return status;
+}
+
+const Point &AI::getPositionPlayed() const {
+    return positionPlayed;
+}
+
+int AI::getPlayerNb() const {
+    return playerNb;
+}
+
+void AI::setPlayerNb(int playerNb) {
+    AI::playerNb = playerNb;
 }

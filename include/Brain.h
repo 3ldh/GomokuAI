@@ -7,6 +7,7 @@
 
 #include "Board.h"
 #include "AI.h"
+#include "MonteCarlo.h"
 
 
 class Brain{
@@ -14,7 +15,9 @@ public:
 private:
     unsigned int _lastMoveX;
     unsigned int _lastMoveY;
+    bool firstPlayer;
     AI ai;
+    MonteCarlo monteCarlo;
 
 public:
     Brain();

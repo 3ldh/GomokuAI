@@ -5,7 +5,6 @@
 #ifndef GOMOKU_IA_H
 #define GOMOKU_IA_H
 
-
 #include <vector>
 #include <iostream>
 #include <memory>
@@ -78,14 +77,20 @@ class AI {
     static const int MAP_SIZE = 19;
 
 public:
+    enum STATUS {
+        IN_PROGRESS = -1,
+        DRAW = 0,
+        WIN = 1,
+        LOOSE = 2,
+    };
 
 private :
     std::vector<std::vector<char>> map;
     std::vector<std::vector<int>> score_map;
+    int playerNb;
+    Point positionPlayed;
+    bool isPointPresent(std::vector<Point> const &points, Point const &p) const;
 
-    int randomRange(int min, int max) const;
-    void print_score_map();
-    void print_map();
     Qtuple_info &find_nb_qtuples_vertical(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_horizontal(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_DiagPos(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
@@ -94,14 +99,29 @@ private :
 
 public:
     AI();
+    AI(const AI &ai);
     virtual ~AI();
     void update_score_map(int posX, int posY);
     Point const &find_best_move() const;
     void update_map(char playerSymbol, int x, int y);
+    std::vector<Point> getBestScoreSquares(int nbSquares);
     std::unique_ptr<Point> first_move() const;
     void signalEnd();
+
+    const std::vector<std::vector<char>> &getMap() const;
+    void setMap(const std::vector<std::vector<char>> &map);
+    const std::vector<std::vector<int>> &getScoreMap() const;
+    void setScoreMap(const std::vector<std::vector<int>> &score_map);
+    static int randomRange(int min, int max);
+    int checkStatus();
+    void print_score_map();
+    void printMap();
+    const Point &getPositionPlayed() const;
+
+
+    int getPlayerNb() const;
+
+    void setPlayerNb(int playerNb);
 };
-
-
 
 #endif //GOMOKU_IA_H
