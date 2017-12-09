@@ -18,11 +18,11 @@ AI::AI() {
         score_map.push_back(score_mapX);
     }
 
- /*   update_map('O', 8, 8);
-    update_score_map(8, 8);
-    getBestScoreSquares(10);
-*/
-//    update_map('O', 9, 8);
+    /*   update_map('O', 8, 8);
+       update_score_map(8, 8);
+       getBestScoreSquares(10);
+   */
+
 //    update_map('X', 9, 7);
 //    update_map('O', 8, 6);
 //    update_score_map(10, 8);
@@ -329,7 +329,10 @@ void AI::update_score_map(int posX, int posY) {
                 if (map[posY + y][posX + x] == '.') {
                     Qtuple_info qtupleOX = find_nb_qtuples("OX", posX + x, posY + y);
                     Qtuple_info qtupleXO = find_nb_qtuples("XO", posX + x, posY + y);
-                    score_map[posY + y][posX + x] = qtupleOX.comptue_score('O') + qtupleXO.comptue_score('X');
+                    if (playerNb == 2)
+                        score_map[posY + y][posX + x] = qtupleOX.comptue_score('O') + qtupleXO.comptue_score('X');
+                    else if (playerNb == 1)
+                        score_map[posY + y][posX + x] = qtupleOX.comptue_score('X') + qtupleXO.comptue_score('O');
                 }
             }
         }
@@ -363,8 +366,9 @@ void AI::update_map(char playerSymbol, int x, int y) {
     if (x >= 0 && x < MAP_SIZE && y >= 0 && y < MAP_SIZE) {
         map[y][x] = playerSymbol;
         score_map[y][x] = -1;
-       /* if (playerSymbol == 'O')
-            printMap();*/
+        positionPlayed = Point(x, y);
+        /* if (playerSymbol == 'O')
+             printMap();*/
     }
 }
 
@@ -429,7 +433,7 @@ std::vector<AI::Point> AI::getBestScoreSquares(int nbSquares) {
         points.push_back(p);
         --nbSquares;
     }
-  /*  for (auto point : points) {
+   /* for (auto point : points) {
         std::cout << point << std::endl;
     }*/
     return points;
@@ -445,11 +449,9 @@ int AI::checkStatus() {
                 draw = false;
             }
             if (score_map[y][x] >= Qtuple_info::OOOO_SCORE) {
-                status = WIN;
-                break;
-            } else if (score_map[y][x] >= Qtuple_info::XXXX_SCORE) {
-                status = LOOSE;
-                break;
+                return WIN;
+            } else if (score_map[y][x] >= Qtuple_info::XXXX_SCORE  && score_map[y][x] < Qtuple_info::OOOO_SCORE) {
+                return LOOSE;
             } else {
                 status = IN_PROGRESS;
             }
@@ -458,6 +460,18 @@ int AI::checkStatus() {
     if (draw)
         status = DRAW;
     return status;
+}
+
+const AI::Point &AI::getPositionPlayed() const {
+    return positionPlayed;
+}
+
+int AI::getPlayerNb() const {
+    return playerNb;
+}
+
+void AI::setPlayerNb(int playerNb) {
+    AI::playerNb = playerNb;
 }
 
 

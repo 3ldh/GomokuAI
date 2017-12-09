@@ -14,6 +14,7 @@ Brain::Brain() : ai(AI())
     _lastMoveY = 0;
     std::srand(std::time(0));
     _board.clear();
+    ai.setPlayerNb(2);
 }
 
 Brain::~Brain()
@@ -25,18 +26,26 @@ int Brain::calculateTurn(int x, int y)
 {
     AI::Point p;
 
+//    ai.update_map('O', 9, 8);
+//    ai.update_map('O', 9, 7);
+//    ai.update_map('O', 9, 6);
+//    ai.update_map('O', 9, 5);
+//    ai.update_score_map(9, 6);
+//    std::cout << "PLayerNB " << ai.getPlayerNb()<< " status " << ai.checkStatus() << std::endl;
+    ai.setPlayerNb(2);
     ai.update_map('X', x, y);
     ai.update_score_map(x, y);
-    ai.print_score_map();
 
-    /*p = ai.find_best_move();
-    */
-    p = monteCarlo.findNextMove(ai, 1);
+//     p = ai.find_best_move();
+//    std::cout << p << std::endl;
+
+    p = monteCarlo.findNextMove(ai, 2);
+//    std::cout << p << std::endl;
     ai.update_map('O', p.x, p.y);
     ai.update_score_map(p.x, p.y);
-    ai.printMap();
-    ai.print_score_map();
 
+//    ai.printMap();
+//    ai.print_score_map();
     _lastMoveX = p.x;
     _lastMoveY = p.y;
     _board._board[p.x][p.y] = Board::OurStone;

@@ -36,7 +36,7 @@ public:
     void incrementVisit();
     int getPlayer() const;
     void setPlayer(int player);
-    std::vector<std::shared_ptr<State>> &&getAllNextStates();
+    std::vector<std::shared_ptr<State>> getAllNextStates();
     int getAdversary();
     void togglePlayerNb();
     void randomPlay();

@@ -4,7 +4,7 @@
 
 #include "Node.h"
 
-#include <utility>
+#include <algorithm>
 
 Node::~Node() {}
 
@@ -14,8 +14,7 @@ Node::Node() {
 }
 
 Node::Node(const std::shared_ptr<State> &state) {
-    Node::state = std::make_shared<State>(state);
-    std::cout << "YOLOOO..." << state.use_count() << std::endl;
+    Node::state = state;
     parent = nullptr;
 }
 
@@ -38,11 +37,11 @@ void Node::setState(std::shared_ptr<State> const &state) {
     Node::state = state;
 }
 
-std::shared_ptr<State> Node::getState() const {
+const std::shared_ptr<State> &Node::getState() const {
     return state;
 }
 
-std::shared_ptr<Node> Node::getParent() const {
+const std::shared_ptr<Node> &Node::getParent() const {
     return parent;
 }
 
@@ -64,7 +63,16 @@ void Node::setChildren(const std::vector<std::shared_ptr<Node>> &children) {
 
 std::shared_ptr<Node> Node::getRandomChildNode() {
     int r = AI::randomRange(0, children.size());
+//    std::cout << "random childNode index " << r << std::endl;
     return children[r];
+}
+
+const std::shared_ptr<Node> Node::getChildWithMaxScore() const {
+
+    std::shared_ptr<Node> it = *std::max_element(children.begin(), children.end(),
+                     [](std::shared_ptr<Node> a, std::shared_ptr<Node> b){ return a->getState()->getVisitCount() < b->getState()->getVisitCount(); });
+//  std::cout << "MaxScoreVisit " <<  it->getState()->getVisitCount() << std::endl;
+    return it;
 }
 
 

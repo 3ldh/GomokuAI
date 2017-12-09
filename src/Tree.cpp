@@ -17,7 +17,7 @@ const std::shared_ptr<Node> &Tree::getRoot() const {
 }
 
 void Tree::setRoot(std::shared_ptr<Node> &root) {
-    Tree::root = std::move(root);
+    Tree::root = root;
 }
 
 void Tree::addChild(std::shared_ptr<Node> parent, std::shared_ptr<Node> child) {

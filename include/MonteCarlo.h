@@ -14,10 +14,10 @@ private :
     static const int WIN_SCORE = 10;
     int opponent;
     long getCurrentTime();
-    void expandNode(std::shared_ptr<Node> node);
-    const std::shared_ptr<Node> findNextBestNode(const std::shared_ptr<Node> node);
-    int simulatePlay(std::shared_ptr<Node> node);
-    void backPropagation(std::shared_ptr<Node> node, int playerNb);
+    void expandNode(const std::shared_ptr<Node> &node);
+    const std::shared_ptr<Node> findNextBestNode(const std::shared_ptr<Node> &node);
+    int simulatePlay(const std::shared_ptr<Node> &node);
+    void backPropagation(const std::shared_ptr<Node> &node, int playerNb);
 public:
     MonteCarlo();
     virtual ~MonteCarlo();

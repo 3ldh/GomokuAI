@@ -24,14 +24,14 @@ public:
     Node &operator=(Node const &node);
     virtual ~Node();
     void setState(std::shared_ptr<State> const &state);
-    std::shared_ptr<State> getState() const;
-    std::shared_ptr<Node> getParent() const;
+    const std::shared_ptr<State> &getState() const;
+    const std::shared_ptr<Node> &getParent() const;
     void setParent(std::shared_ptr<Node> const &parent);
     std::vector<std::shared_ptr<Node>> &getChildren();
     const std::vector<std::shared_ptr<Node>> &getChildren() const;
     void setChildren(const std::vector<std::shared_ptr<Node>> &children);
     std::shared_ptr<Node> getRandomChildNode();
-
+    const std::shared_ptr<Node> getChildWithMaxScore() const;
 };
 
 

@@ -12,6 +12,7 @@ State::State(std::shared_ptr<State> const &state) {
     playerNb = state->getPlayer();
     score = state->getScore();
     visitCount = state->getVisitCount();
+    ai.setPlayerNb(playerNb);
 }
 
 State::State(AI const &ai) {
@@ -53,18 +54,21 @@ void State::setPlayer(int player) {
     State::playerNb = player;
 }
 
-std::vector<std::shared_ptr<State>> &&State::getAllNextStates() {
+std::vector<std::shared_ptr<State>> State::getAllNextStates() {
     std::vector<std::shared_ptr<State>> states;
     std::vector<AI::Point> points = ai.getBestScoreSquares(NB_OF_BEST_SCORE_TO_SEARCH);
 
     for (auto &point: points) {
         std::shared_ptr<State> newState = std::make_shared<State>(ai);
+//        std::cout << point << std::endl;
         newState->setPlayer(3 - playerNb);
-        AI ai = newState->getAi();
-        ai.update_map((newState->playerNb == 1 ? '0' : 'X'), point.x, point.y);
+        newState->getAi().setPlayerNb(newState->getPlayer());
+        newState->getAi().update_map((newState->getPlayer() == 2 ? '0' : 'X'), point.x, point.y);
+        newState->getAi().update_score_map(point.x, point.y);
+//        newState->getAi().print_score_map();
         states.push_back(newState);
     }
-    return std::move(states);
+    return states;
 }
 
 AI &State::getAi() {
@@ -87,8 +91,11 @@ void State::randomPlay() {
     std::vector<AI::Point> points = ai.getBestScoreSquares(NB_OF_BEST_SCORE_TO_SEARCH);
 
     int r = AI::randomRange(0, points.size());
-    ai.update_map(playerNb == 2 ? 'X' : 'O', points[r].x, points[r].y);
+//    std::cout << "RandomPlay for ai nb " << playerNb << " " << points[r] << std::endl;
+
+    ai.update_map(playerNb == 2 ? 'O' : 'X', points[r].x, points[r].y);
     ai.update_score_map(points[r].x, points[r].y);
+  //  ai.printMap();
 }
 
 void State::addScore(double s) {

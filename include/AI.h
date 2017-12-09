@@ -95,7 +95,8 @@ public:
 private :
     std::vector<std::vector<char>> map;
     std::vector<std::vector<int>> score_map;
-
+    int playerNb;
+    Point positionPlayed;
     bool isPointPresent(std::vector<Point> const &points, Point const &p) const;
 
     Qtuple_info &find_nb_qtuples_vertical(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
@@ -121,6 +122,11 @@ public:
     int checkStatus();
     void print_score_map();
     void printMap();
+    const Point &getPositionPlayed() const;
+
+    int getPlayerNb() const;
+
+    void setPlayerNb(int playerNb);
 };
 
 #endif //GOMOKU_IA_H
