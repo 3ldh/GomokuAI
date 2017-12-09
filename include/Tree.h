@@ -6,7 +6,6 @@
 #define GOMOKU_TREE_H
 
 
-#include <Memory>
 #include "Node.h"
 
 class Tree {

@@ -2,10 +2,10 @@
 // Created by Mathieu on 07/12/2017.
 //
 
-#include <afxres.h>
 #include <Tree.h>
 #include <UCT.h>
 #include <limits>
+#include <Timer.h>
 #include "MonteCarlo.h"
 
 MonteCarlo::MonteCarlo() {}
@@ -15,24 +15,29 @@ MonteCarlo::~MonteCarlo() {
 }
 
 long MonteCarlo::getCurrentTime() {
-    SYSTEMTIME time;
-    GetSystemTime(&time);
-    return (time.wSecond * 1000) + time.wMilliseconds;
+  //  SYSTEMTIME time;
+    //GetSystemTime(&time);
+    //return (time.wSecond * 1000) + time.wMilliseconds;
 }
 
 const AI::Point &MonteCarlo::findNextMove(const AI &ai, int playerNb) {
 
-    long start = getCurrentTime();
-    long end = start + 4000;
+    Timer timer;
+
+    //long start = getCurrentTime();
+    //long end = start + 4000;
     Tree tree;
     const std::shared_ptr<Node> &root = tree.getRoot();
 
     opponent = 3 - playerNb;
     root->getState()->setAi(ai);
     root->getState()->setPlayer(opponent);
+    timer.start();
 
-    while (getCurrentTime() < end) {
-        std::cout << "Time : " << getCurrentTime() << " < " << end << std::endl;
+    std::cout << "Time : " << timer.timeElapsed().count() << std::endl;
+
+    while (!timer.isTimeOverMilliseconds(4500)) {
+        std::cout << "Time : " << timer.timeElapsed().count() << std::endl;
         //Phase 1 selection
         std::shared_ptr<Node> nextBestNode = findNextBestNode(root);
         //Phase 2 expansion
