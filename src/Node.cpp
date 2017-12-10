@@ -22,15 +22,18 @@ Node::Node(const std::shared_ptr<Node> &node) {
     state = node->getState();
     if (node->getParent() != nullptr)
         parent = node->getParent();
-    for (int i = 0; i < node->getChildren().size(); ++i) {
+    for (unsigned int i = 0; i < node->getChildren().size(); ++i) {
         children.push_back(std::make_shared<Node>());
     }
 }
 
 Node &Node::operator=(Node const &node) {
-    state = node.getState();
-    parent = node.getParent();
-    children = node.getChildren();
+    if (this != &node) {
+        state = node.getState();
+        parent = node.getParent();
+        children = node.getChildren();
+    }
+    return *this;
 }
 
 void Node::setState(std::shared_ptr<State> const &state) {

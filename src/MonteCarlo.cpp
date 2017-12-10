@@ -18,6 +18,7 @@ long MonteCarlo::getCurrentTime() {
   //  SYSTEMTIME time;
     //GetSystemTime(&time);
     //return (time.wSecond * 1000) + time.wMilliseconds;
+    return 0;
 }
 
 const AI::Point &MonteCarlo::findNextMove(const AI &ai, int playerNb) {

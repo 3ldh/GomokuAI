@@ -12,12 +12,11 @@ AI::AI() {
         std::vector<int> score_mapX;
         for (int x = 0; x < MAP_SIZE; ++x) {
             mapX.push_back('.');
-            score_mapX.push_back(20 * Qtuple_info::EMPTY_SCORE);
+            score_mapX.push_back(12 * Qtuple_info::EMPTY_SCORE);
         }
         map.push_back(mapX);
         score_map.push_back(score_mapX);
     }
-
     /*   update_map('O', 8, 8);
        update_score_map(8, 8);
        getBestScoreSquares(10);
@@ -433,9 +432,9 @@ std::vector<AI::Point> AI::getBestScoreSquares(int nbSquares) {
         points.push_back(p);
         --nbSquares;
     }
-   /* for (auto point : points) {
-        std::cout << point << std::endl;
-    }*/
+    /* for (auto point : points) {
+         std::cout << point << std::endl;
+     }*/
     return points;
 }
 
@@ -450,7 +449,11 @@ int AI::checkStatus() {
             }
             if (score_map[y][x] >= Qtuple_info::OOOO_SCORE) {
                 return WIN;
-            } else if (score_map[y][x] >= Qtuple_info::XXXX_SCORE  && score_map[y][x] < Qtuple_info::OOOO_SCORE) {
+            } else if (score_map[y][x] >= Qtuple_info::XXXX_SCORE) {
+                return LOOSE;
+            } else if (score_map[y][x] >= Qtuple_info::OOO_SCORE && checkNNNAlignOpening(playerNb == 2 ? 'O' : 'X', x, y)) {
+                return WIN;
+            } else if (score_map[y][x] >= Qtuple_info::XXX_SCORE && checkNNNAlignOpening(playerNb == 2 ? 'X' : 'O', x, y)) {
                 return LOOSE;
             } else {
                 status = IN_PROGRESS;
@@ -472,6 +475,50 @@ int AI::getPlayerNb() const {
 
 void AI::setPlayerNb(int playerNb) {
     AI::playerNb = playerNb;
+}
+
+bool AI::checkNNNAlignOpening(char playerSymbol, int x, int y) {
+    if (x == 9 && (y == 5 || y == 9))
+        std::cout << "PlayerSymbol " << playerSymbol << " In " << std::endl;
+    if ((y - 1 >= 0 && y - 1 < MAP_SIZE && map[y - 1][x] == playerSymbol
+         && y - 2 >= 0 && y - 2 < MAP_SIZE && map[y - 2][x] == playerSymbol
+         && y - 3 >= 0 && y - 3 < MAP_SIZE && map[y - 3][x] == playerSymbol
+         && y - 4 >= 0 && y - 4 < MAP_SIZE && map[y - 4][x] == '.'
+         && map[y][x] == '.')
+        || (y + 1 >= 0 && y + 1 < MAP_SIZE && map[y + 1][x] == playerSymbol
+            && y + 2 >= 0 && y + 2 < MAP_SIZE && map[y + 2][x] == playerSymbol
+            && y + 3 >= 0 && y + 3 < MAP_SIZE && map[y + 3][x] == playerSymbol
+            && y + 4 >= 0 && y + 4 < MAP_SIZE && map[y + 4][x] == '.'
+            && map[y][x] == '.')
+         || (x - 1 >= 0 && x - 1 < MAP_SIZE && map[y][x - 1] == playerSymbol
+             && x - 2 >= 0 && x - 2 < MAP_SIZE && map[y][x - 2] == playerSymbol
+             && x - 3 >= 0 && x - 3 < MAP_SIZE && map[y][x - 3] == playerSymbol
+             && x - 4 >= 0 && x - 4 < MAP_SIZE && map[y][x - 4] == '.'
+             && map[y][x] == '.')
+         || (x + 1 >= 0 && x + 1 < MAP_SIZE && map[y][x + 1] == playerSymbol
+             && x + 2 >= 0 && x + 2 < MAP_SIZE && map[y][x + 2] == playerSymbol
+             && x + 3 >= 0 && x + 3 < MAP_SIZE && map[y][x + 3] == playerSymbol
+             && x + 4 >= 0 && x + 4 < MAP_SIZE && map[y][x + 4] == '.'
+             && map[y][x] == '.')
+         || (x + 1 >= 0 && x + 1 < MAP_SIZE && y + 1 >= 0 && y + 1 < MAP_SIZE &&
+             map[y + 1][x + 1] == playerSymbol
+             && x + 2 >= 0 && x + 2 < MAP_SIZE && y + 2 >= 0 && y + 2 < MAP_SIZE &&
+             map[y + 2][x + 2] == playerSymbol
+             && x + 3 >= 0 && x + 3 < MAP_SIZE && y + 3 >= 0 && y + 3 < MAP_SIZE &&
+             map[y + 3][x + 3] == playerSymbol
+             && x + 4 >= 0 && x + 4 < MAP_SIZE && y + 4 >= 0 && y + 4 < MAP_SIZE && map[y + 4][x + 4] == '.'
+             && map[y][x] == '.')
+         || (x - 1 >= 0 && x - 1 < MAP_SIZE && y - 1 >= 0 && y - 1 < MAP_SIZE &&
+             map[y - 1][x - 1] == playerSymbol
+             && x - 2 >= 0 && x - 2 < MAP_SIZE && y - 2 >= 0 && y - 2 < MAP_SIZE &&
+             map[y - 2][x - 2] == playerSymbol
+             && x - 3 >= 0 && x - 3 < MAP_SIZE && y - 3 >= 0 && y - 3 < MAP_SIZE &&
+             map[y - 3][x - 3] == playerSymbol
+             && x - 4 >= 0 && x - 4 < MAP_SIZE && y - 4 >= 0 && y - 4 < MAP_SIZE && map[y - 4][x - 4] == '.'
+             && map[y][x] == '.')) {
+        return true;
+    }
+    return false;
 }
 
 

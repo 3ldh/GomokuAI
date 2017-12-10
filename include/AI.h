@@ -98,7 +98,7 @@ private :
     int playerNb;
     Point positionPlayed;
     bool isPointPresent(std::vector<Point> const &points, Point const &p) const;
-
+    bool checkNNNAlignOpening(char playerSymbol,  int x, int y);
     Qtuple_info &find_nb_qtuples_vertical(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_horizontal(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
     Qtuple_info &find_nb_qtuples_DiagPos(Qtuple_info &qtuple, std::string const &playerSymbols, int posX, int posY);
@@ -123,9 +123,7 @@ public:
     void print_score_map();
     void printMap();
     const Point &getPositionPlayed() const;
-
     int getPlayerNb() const;
-
     void setPlayerNb(int playerNb);
 };
 
