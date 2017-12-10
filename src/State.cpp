@@ -5,13 +5,14 @@
 #include <limits>
 #include "State.h"
 
-State::State() : ai(AI()), playerNb(0), visitCount(0), score(0) {}
+State::State() : ai(AI()), playerNb(0), visitCount(0), score(0), index(0) {}
 
 State::State(std::shared_ptr<State> const &state) {
     ai = AI(state->ai);
     playerNb = state->getPlayer();
     score = state->getScore();
     visitCount = state->getVisitCount();
+    index = state->index;
     ai.setPlayerNb(playerNb);
 }
 
@@ -20,6 +21,7 @@ State::State(AI const &ai) {
     playerNb = 0;
     visitCount = 0;
     score = 0;
+    index = 0;
 }
 
 State::~State() {
@@ -90,11 +92,14 @@ void State::togglePlayerNb() {
 void State::randomPlay() {
     std::vector<AI::Point> points = ai.getBestScoreSquares(NB_OF_BEST_SCORE_TO_SEARCH);
 
-    int r = AI::randomRange(0, points.size());
+    int r = index;//AI::randomRange(0, points.size());
 //    std::cout << "RandomPlay for ai nb " << playerNb << " " << points[r] << std::endl;
 
     ai.update_map(playerNb == 2 ? 'O' : 'X', points[r].x, points[r].y);
     ai.update_score_map(points[r].x, points[r].y);
+    ++index;
+    if (index >= points.size())
+        index = 0;
   //  ai.printMap();
 }
 

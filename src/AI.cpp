@@ -478,8 +478,6 @@ void AI::setPlayerNb(int playerNb) {
 }
 
 bool AI::checkNNNAlignOpening(char playerSymbol, int x, int y) {
-    if (x == 9 && (y == 5 || y == 9))
-        std::cout << "PlayerSymbol " << playerSymbol << " In " << std::endl;
     if ((y - 1 >= 0 && y - 1 < MAP_SIZE && map[y - 1][x] == playerSymbol
          && y - 2 >= 0 && y - 2 < MAP_SIZE && map[y - 2][x] == playerSymbol
          && y - 3 >= 0 && y - 3 < MAP_SIZE && map[y - 3][x] == playerSymbol
