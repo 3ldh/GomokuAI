@@ -18,21 +18,6 @@ AI::AI() {
         map.push_back(mapX);
         score_map.push_back(score_mapX);
     }
-    /*   update_map('O', 8, 8);
-       update_score_map(8, 8);
-       getBestScoreSquares(10);
-   */
-
-//    update_map('X', 9, 7);
-//    update_map('O', 8, 6);
-//    update_score_map(10, 8);
-    // update_score_map(9, 8);
-//    update_score_map(9, 7);
-//    printMap();
-
-//    update_score_map(8, 6);
-
-//    find_best_move();
 }
 
 
@@ -74,9 +59,7 @@ AI::Qtuple_info &AI::find_nb_qtuples_vertical(
                 max_consecutive_O = 0;
             }
             y = posY + currI;
-//            std::cout << "ADD " << max_consecutive_O << std::endl;
         }
-        //skip iteration if x or y outside the map or if we encounter in the 5 next case the symbol of the opposite player
         if ((y < 0 || y >= MAP_SIZE) || (i == 0 && ((y >= 0 && y < MAP_SIZE && map[y][posX] == playerSymbols[1])
                                                     || (y + 1 >= 0 && y + 1 < MAP_SIZE &&
                                                         map[y + 1][posX] == playerSymbols[1])
@@ -86,7 +69,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_vertical(
                                                         map[y + 3][posX] == playerSymbols[1])
                                                     || (y + 4 >= 0 && y + 4 < MAP_SIZE &&
                                                         map[y + 4][posX] == playerSymbols[1])))) {
-//            std::cout << " CANCEL " << std::endl;
             consecutive_n = 0;
             i = -1;
             ++currI;
@@ -95,7 +77,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_vertical(
             consecutive_empty = 0;
             continue;
         }
-//        std::cout << "currI : " << currI << " (" << posX << ", " << y << ") ";
         if (map[y][posX] == playerSymbols[0]) {
             ++consecutive_n;
             consecutive_empty = 0;
@@ -107,7 +88,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_vertical(
             }
         }
     }
-//    std::cout << std::endl << qtuple << std::endl;
     return qtuple;
 }
 
@@ -132,9 +112,7 @@ AI::Qtuple_info &AI::find_nb_qtuples_horizontal(
                 max_consecutive_O = 0;
             }
             x = posX + currI;
-//            std::cout << std::endl;
         }
-        //skip iteration if x or y outside the map or if we encounter in the 5 next case the symbol of the opposite player
         if ((x < 0 || x >= MAP_SIZE) || (i == 0 && (map[posY][x] == playerSymbols[1]
                                                     || (x + 1 >= 0 && x + 1 < MAP_SIZE &&
                                                         map[posY][x + 1] == playerSymbols[1])
@@ -144,7 +122,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_horizontal(
                                                         map[posY][x + 3] == playerSymbols[1])
                                                     || (x + 4 >= 0 && x + 4 < MAP_SIZE &&
                                                         map[posY][x + 4] == playerSymbols[1])))) {
-            //  std::cout << " CANCEL " << std::endl;
             consecutive_n = 0;
             i = -1;
             ++currI;
@@ -153,12 +130,10 @@ AI::Qtuple_info &AI::find_nb_qtuples_horizontal(
             consecutive_empty = 0;
             continue;
         }
-//        std::cout << "currI : " << currI << " (" << x << ", " << posY << ") ";
         if (map[posY][x] == playerSymbols[0]) {
             ++consecutive_n;
             consecutive_empty = 0;
         } else if (map[posY][x] == '.') {
-            //std::cout << " CANCEL AT (" << posX << ", " << y << ") " << std::endl;
             ++consecutive_empty;
             if (consecutive_empty == 5) {
                 qtuple.convert_to_qtuple(0);
@@ -166,7 +141,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_horizontal(
             }
         }
     }
-//    std::cout << std::endl << qtuple << std::endl;
     return qtuple;
 }
 
@@ -192,9 +166,7 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagPos(
             }
             y = posY + currI;
             x = posX + currI;
-//            std::cout << std::endl;
         }
-        //skip iteration if x or y outside the map or if we encounter in the 5 next case the symbol of the opposite player
         if ((y < 0 || y >= MAP_SIZE || x < 0 || x >= MAP_SIZE)
             || (i == 0 && ((y >= 0 && y < MAP_SIZE && x >= 0 && x < MAP_SIZE && map[y][x] == playerSymbols[1])
                            || (y + 1 >= 0 && y + 1 < MAP_SIZE && x + 1 >= 0 && x + 1 < MAP_SIZE &&
@@ -205,7 +177,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagPos(
                                map[y + 3][x + 3] == playerSymbols[1])
                            || (y + 4 >= 0 && y + 4 < MAP_SIZE && x + 4 >= 0 && x + 4 < MAP_SIZE &&
                                map[y + 4][x + 4] == playerSymbols[1])))) {
-//            std::cout << " CANCEL " << std::endl;
             consecutive_n = 0;
             i = -1;
             currI++;
@@ -215,7 +186,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagPos(
             consecutive_empty = 0;
             continue;
         }
-//        std::cout << "currI : " << currI << " (" << x << ", " << y << ") ";
         if (map[y][x] == playerSymbols[0]) {
             ++consecutive_n;
             consecutive_empty = 0;
@@ -227,7 +197,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagPos(
             }
         }
     }
-//    std::cout << std::endl << qtuple << std::endl;
     return qtuple;
 }
 
@@ -254,9 +223,7 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
             }
             y = posY - currI;
             x = posX + currI;
-//            std::cout << std::endl;
         }
-        //skip iteration if x or y outside the map or if we encounter in the 5 next case the symbol of the opposite player
         if ((y < 0 || y >= MAP_SIZE || x < 0 || x >= MAP_SIZE)
             || (i == 0 && ((y >= 0 && y < MAP_SIZE && x >= 0 && x < MAP_SIZE && map[y][x] == playerSymbols[1])
                            || (y - 1 >= 0 && y - 1 < MAP_SIZE && x + 1 >= 0 && x + 1 < MAP_SIZE &&
@@ -267,7 +234,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
                                map[y - 3][x + 3] == playerSymbols[1])
                            || (y - 4 >= 0 && y - 4 < MAP_SIZE && x + 4 >= 0 && x + 4 < MAP_SIZE &&
                                map[y - 4][x + 4] == playerSymbols[1])))) {
-//            std::cout << " CANCEL " << std::endl;
             consecutive_n = 0;
             i = -1;
             ++currI;
@@ -277,7 +243,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
             consecutive_empty = 0;
             continue;
         }
-//        std::cout << "currI : " << currI << " (" << x << ", " << y << ") ";
         if (map[y][x] == playerSymbols[0]) {
             ++consecutive_n;
             consecutive_empty = 0;
@@ -289,7 +254,6 @@ AI::Qtuple_info &AI::find_nb_qtuples_DiagNeg(
             }
         }
     }
-//    std::cout << std::endl << qtuple << std::endl;
     return qtuple;
 }
 
@@ -337,7 +301,6 @@ void AI::update_score_map(int posX, int posY) {
             }
         }
     }
-//    print_score_map();
 }
 
 Point const &AI::find_best_move() const {
@@ -358,7 +321,6 @@ Point const &AI::find_best_move() const {
             }
         }
     }
-//    std::cout << p->x << ", " << p->y << std::endl;
     return *p;
 }
 
@@ -367,8 +329,6 @@ void AI::update_map(char playerSymbol, int x, int y) {
         map[y][x] = playerSymbol;
         score_map[y][x] = -1;
         positionPlayed = Point(x, y);
-        /* if (playerSymbol == 'O')
-             printMap();*/
     }
 }
 
@@ -438,9 +398,6 @@ std::vector<Point> AI::getBestScoreSquares(int nbSquares) {
         points.push_back(p);
         --nbSquares;
     }
-    /* for (auto point : points) {
-         std::cout << point << std::endl;
-     }*/
     return points;
 }
 

@@ -62,12 +62,10 @@ std::vector<std::shared_ptr<State>> State::getAllNextStates() {
 
     for (auto &point: points) {
         std::shared_ptr<State> newState = std::make_shared<State>(ai);
-//        std::cout << point << std::endl;
         newState->setPlayer(3 - playerNb);
         newState->getAi().setPlayerNb(newState->getPlayer());
         newState->getAi().update_map((newState->getPlayer() == 2 ? '0' : 'X'), point.x, point.y);
         newState->getAi().update_score_map(point.x, point.y);
-//        newState->getAi().print_score_map();
         states.push_back(newState);
     }
     return states;
@@ -91,16 +89,13 @@ void State::togglePlayerNb() {
 
 void State::randomPlay() {
     std::vector<Point> points = ai.getBestScoreSquares(NB_OF_BEST_SCORE_TO_SEARCH);
-
-    int r = index;//AI::randomRange(0, points.size());
-//    std::cout << "RandomPlay for ai nb " << playerNb << " " << points[r] << std::endl;
+    int r = index;
 
     ai.update_map(playerNb == 2 ? 'O' : 'X', points[r].x, points[r].y);
     ai.update_score_map(points[r].x, points[r].y);
     ++index;
     if (index >= points.size())
         index = 0;
-  //  ai.printMap();
 }
 
 void State::addScore(double s) {

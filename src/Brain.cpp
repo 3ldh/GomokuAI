@@ -25,25 +25,11 @@ int Brain::calculateTurn(int x, int y)
     Point p;
 
     ai.setPlayerNb(2);
-//    ai.update_map('X', 6, 6);
-//    ai.update_map('X', 9, 9);
-//    ai.update_map('X', 8, 8);
-//    ai.update_map('X', 7, 7);
-//    ai.update_score_map(6, 6);
-//    std::cout << "PLayerNB " << ai.getPlayerNb()<< " status " << ai.checkStatus() << std::endl;
-//    ai.printMap();
-//    ai.print_score_map();
-
     ai.update_map('X', x, y);
     ai.update_score_map(x, y);
-
-//     p = ai.find_best_move();
-
-    p = monteCarlo.findNextMove(ai, 2);
+    p = ai.find_best_move();
     ai.update_map('O', p.x, p.y);
     ai.update_score_map(p.x, p.y);
-//    ai.printMap();
-//    ai.print_score_map();
     _lastMoveX = p.x;
     _lastMoveY = p.y;
     return (0);

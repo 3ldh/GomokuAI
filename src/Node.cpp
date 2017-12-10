@@ -66,17 +66,13 @@ void Node::setChildren(const std::vector<std::shared_ptr<Node>> &children) {
 
 std::shared_ptr<Node> Node::getRandomChildNode() {
     int r = AI::randomRange(0, children.size());
-//    std::cout << "random childNode index " << r << std::endl;
     return children[r];
 }
 
 const std::shared_ptr<Node> Node::getChildWithMaxScore() const {
-
-  //  if (!children.empty())
     return *std::max_element(children.begin(), children.end(),
-                     [](std::shared_ptr<Node> a, std::shared_ptr<Node> b){ return a->getState()->getScore() < b->getState()->getScore(); });
-//  std::cout << "MaxScoreVisit " <<  it->getState()->getVisitCount() << std::endl;
-    //return std::make_shared<Node>(*this);
+                     [](std::shared_ptr<Node> a, std::shared_ptr<Node> b){
+                         return a->getState()->getScore() < b->getState()->getScore(); });
 }
 
 
