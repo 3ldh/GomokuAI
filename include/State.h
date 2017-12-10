@@ -10,13 +10,14 @@
 
 class State {
 
-#define NB_OF_BEST_SCORE_TO_SEARCH 10
+#define NB_OF_BEST_SCORE_TO_SEARCH 20
 
 private:
     AI ai;
     int playerNb;
     int visitCount;
     double score;
+    unsigned int index;
 
 public:
     State();
