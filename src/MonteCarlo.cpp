@@ -2,10 +2,10 @@
 // Created by Mathieu on 07/12/2017.
 //
 
-#include <afxres.h>
 #include <Tree.h>
 #include <UCT.h>
 #include <limits>
+#include <Timer.h>
 #include "MonteCarlo.h"
 
 MonteCarlo::MonteCarlo() {}
@@ -15,24 +15,30 @@ MonteCarlo::~MonteCarlo() {
 }
 
 long MonteCarlo::getCurrentTime() {
-    SYSTEMTIME time;
-    GetSystemTime(&time);
-    return (time.wSecond * 1000) + time.wMilliseconds;
+    //  SYSTEMTIME time;
+    //GetSystemTime(&time);
+    //return (time.wSecond * 1000) + time.wMilliseconds;
+    return (0);
 }
 
 const Point &MonteCarlo::findNextMove(const AI &ai, int playerNb) {
 
-    long start = getCurrentTime();
-    long end = start + 4000;
+    Timer timer;
+
+    //long start = getCurrentTime();
+    //long end = start + 4000;
     Tree tree;
     const std::shared_ptr<Node> &root = tree.getRoot();
 
     opponent = 3 - playerNb;
     root->getState()->setAi(ai);
     root->getState()->setPlayer(opponent);
+    timer.start();
 
-    while (getCurrentTime() < end) {
-//        std::cout << "Time : " << getCurrentTime() << " < " << end << std::endl;
+    std::cout << "Time : " << timer.timeElapsed().count() << std::endl;
+
+    while (!timer.isTimeOverMilliseconds(4500)) {
+        std::cout << "Time : " << timer.timeElapsed().count() << std::endl;
         //Phase 1 selection
         std::shared_ptr<Node> nextBestNode = findNextBestNode(root);
         //Phase 2 expansion
@@ -68,10 +74,10 @@ const Point &MonteCarlo::findNextMove(const AI &ai, int playerNb) {
 
 const std::shared_ptr<Node> MonteCarlo::findNextBestNode(const std::shared_ptr<Node> &rootNode) {
     std::shared_ptr<Node> node = rootNode;
-//    std::cout << "Finding Next best node...." << std::endl;
+    std::cout << "Finding Next best node...." << std::endl;
 
     while (!node->getChildren().empty()) {
-//        std::cout << "Finding Next best node loop...." << std::endl;
+        std::cout << "Finding Next best node loop...." << std::endl;
         node = UCT::findNodeWithBestUCT(node);
     }
     return node;
@@ -81,7 +87,7 @@ void MonteCarlo::expandNode(const std::shared_ptr<Node> &node) {
     std::vector<std::shared_ptr<State>> allNextStates = node->getState()->getAllNextStates();
 
     for (auto &state: allNextStates) {
-//        std::cout << "Expanding Node...." << state->getAi().getPositionPlayed() << std::endl;
+        std::cout << "Expanding Node...." << state->getAi().getPositionPlayed() << std::endl;
         std::shared_ptr<Node> newNode = std::make_shared<Node>(state);
         newNode->setParent(node);
         newNode->getState()->setPlayer(node->getState()->getAdversary());
@@ -101,19 +107,19 @@ int MonteCarlo::simulatePlay(const std::shared_ptr<Node> &node) {
         return gameStatus;
     }
     while (gameStatus == AI::IN_PROGRESS) {
-//        std::cout << "Simulating random Play..." << std::endl;
+        std::cout << "Simulating random Play..." << std::endl;
         tmpState->togglePlayerNb();
         tmpState->randomPlay();
         gameStatus = tmpState->getAi().checkStatus();
     }
-//    std::cout << "game Status " << gameStatus << std::endl;
+    std::cout << "game Status " << gameStatus << std::endl;
     return gameStatus;
 }
 
 void MonteCarlo::backPropagation(const std::shared_ptr<Node> &node, int playResult) {
     std::shared_ptr<Node> tmpNode = node;
     while (tmpNode != nullptr) {
-//        std::cout << "Backpropagation..." << std::endl;
+        std::cout << "Backpropagation..." << std::endl;
         tmpNode->getState()->incrementVisit();
 //        std::cout << "player " << tmpNode->getState()->getPlayer() << " = " << playerNb << std::endl;
         if (tmpNode->getState()->getPlayer() == 2 && playResult == AI::WIN)

@@ -15,7 +15,7 @@ set(SOURCE_FILES
         src/State.cpp
         src/UCT.cpp
         src/MonteCarlo.cpp
-        )
+        src/Timer.cpp)
 
 set(INCLUDE_FILES
         include/Core.h
@@ -28,6 +28,7 @@ set(INCLUDE_FILES
         include/State.h
         include/MonteCarlo.h
         include/Point.h
-        include/UCT.h)
+        include/UCT.h
+        include/Timer.h)
 
 add_executable(pbrain-LookAtMyBigBrain ${SOURCE_FILES} ${INCLUDE_FILES})

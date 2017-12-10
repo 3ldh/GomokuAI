@@ -12,6 +12,10 @@ struct Point{
     }
     unsigned int x;
     unsigned int y;
+    friend std::ostream &operator<<(std::ostream &os, const Point &p) {
+        os << "(" << p.x << ", " << p.y << ") ";
+        return os;
+    }
 };
 
 #endif //GOMOKU_POSITION_H

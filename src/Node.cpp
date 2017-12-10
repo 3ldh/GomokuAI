@@ -70,10 +70,11 @@ std::shared_ptr<Node> Node::getRandomChildNode() {
 
 const std::shared_ptr<Node> Node::getChildWithMaxScore() const {
 
-    std::shared_ptr<Node> it = *std::max_element(children.begin(), children.end(),
+  //  if (!children.empty())
+    return *std::max_element(children.begin(), children.end(),
                      [](std::shared_ptr<Node> a, std::shared_ptr<Node> b){ return a->getState()->getVisitCount() < b->getState()->getVisitCount(); });
 //  std::cout << "MaxScoreVisit " <<  it->getState()->getVisitCount() << std::endl;
-    return it;
+    //return std::make_shared<Node>(*this);
 }
 
 

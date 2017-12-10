@@ -24,10 +24,10 @@ int Brain::calculateTurn(int x, int y)
 {
     Point p;
 
-//    ai.update_map('O', 9, 8);
-//    ai.update_map('O', 9, 7);
-//    ai.update_map('O', 9, 6);
-//    ai.update_map('O', 9, 5);
+//    ai.update_map('X', 9, 8);
+//    ai.update_map('X', 9, 7);
+//    ai.update_map('X', 9, 6);
+//    ai.update_map('X', 9, 5);
 //    ai.update_score_map(9, 6);
 //    std::cout << "PLayerNB " << ai.getPlayerNb()<< " status " << ai.checkStatus() << std::endl;
     ai.setPlayerNb(2);
@@ -41,9 +41,8 @@ int Brain::calculateTurn(int x, int y)
 //    std::cout << p << std::endl;
     ai.update_map('O', p.x, p.y);
     ai.update_score_map(p.x, p.y);
-
-//    ai.printMap();
-//    ai.print_score_map();
+    ai.printMap();
+    ai.print_score_map();
     _lastMoveX = p.x;
     _lastMoveY = p.y;
     return (0);
